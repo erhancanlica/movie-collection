@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(new EncodingFilter(), ChannelProcessingFilter.class);
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/registration").permitAll()
+                .antMatchers("/resources/static/**",  "/registration").permitAll()
                 .antMatchers("/employee**").hasRole("EMPLOYEE")
                 .antMatchers("/admin**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -56,8 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager customAuthenticationManager() throws Exception {
         return authenticationManager();
     }
-
-    @Bean
+    
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }

@@ -11,7 +11,11 @@ public interface EmployeeService {
 
     Employee findByUser(Users user);
 
+    List<CreateUserDto> getAllEmployee();
+
     GeneralResponse createEmploye(CreateUserDto createUserDto);
 
-    List<CreateUserDto> getAllEmployee();
+    void updateEmployee(CreateUserDto userDto);
+
+    void deleteEmployee(CreateUserDto userDto);
 }

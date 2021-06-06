@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Sign Up</title>
+    <link rel="stylesheet" th:href="@{../../resources/static/css/style.min.css}">
+    <link rel="stylesheet"  th:href="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css}">
+    <script th:src="@{https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js}"></script>
+    <script th:src="@{https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js}"></script>
+
+</head>
+
+<body>
+
+<div id="main-wrapper">
+
+    <div th:insert="template/topHeader.html" />
+
+    <div th:insert="template/leftSideBar.html" />
+
+    <div class="page-wrapper">
+
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-5 align-self-center">
+                    <h4 class="page-title">ADMİN PANELİ</h4>
+                </div>
+                <div class="col-7 align-self-center">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="/admin/listUser">Kullanıcı Bilgileri</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Kullanıcı Oluştur</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+
+                            <div class="card-header bg-megna">
+                                <h4 class="m-b-0 text-white">Kullanıcı Tanımlama Ve Yetkilendirme</h4>
+                            </div>
+
+                            <form id="createUser">
+                                <div class="form-body">
+                                    <div class="card-body">
+
+                                        <div class="row p-t-20">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Username</label>
+                                                    <input type="text" id="username" name="username" class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group has-danger">
+                                                    <label class="control-label">password</label>
+                                                    <input type="password" id="password" name="password"
+                                                           class="form-control form-control-danger">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row p-t-20">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label">Kullanıcı Rolu</label>
+                                                    <select class="form-control custom-select" name="userType">
+                                                        <div th:each="role : ${userRoles}" >
+                                                            <option th:value="${role}">${role}</option>
+                                                        </div>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group has-danger">
+                                                    <label class="control-label">Admin/Çalışan Adı</label>
+                                                    <input type="text" id="roleName" name="roleName"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="form-actions">
+                                        <div class="card-body">
+                                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>Kaydet</button>
+                                            <button type="button" class="btn btn-dark">İptal</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:insert="template/footer.html" />
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    });
+    $(document).ready(function() {
+        $("#createUser").submit(function(event) {
+            event.preventDefault();
+            var postData = $('#createUser').serializeObject();
+            $.ajax({
+                type: "post",
+                url: "createUser",
+                data: JSON.stringify(postData),
+                contentType: "application/json",
+                success: function(response) {
+                    if(response.result == 0){
+                        toastr.success(response.message)
+                        setTimeout(function(){
+                            location.reload()
+                        },500)
+                    }
+                    else {
+                        console.log(response.message)
+                        toastr.error(response.message)
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    toastr.error("Bilinmeyen Bir Hata oluştu")
+                }
+            })
+        });
+    });
+
+</script>
+
+</body>
+
+</html>

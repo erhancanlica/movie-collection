@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum UserType {
-    USER("EMPLOYEE", "ROLE_EMPLOYEE" ),
+    EMPLOYEE("EMPLOYEE", "ROLE_EMPLOYEE" ),
     ADMIN("ADMIN", "ROLE_ADMIN");
 
     private static final Map<String, UserType> lookup = new ConcurrentHashMap<>();

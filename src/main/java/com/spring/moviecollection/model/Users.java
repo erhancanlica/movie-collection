@@ -1,7 +1,7 @@
 package com.spring.moviecollection.model;
 
+import com.spring.moviecollection.model.enums.UserType;
 import lombok.*;
-import org.hibernate.usertype.UserType;
 
 import javax.persistence.*;
 import java.io.Serializable;

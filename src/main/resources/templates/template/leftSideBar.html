@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<span th:if="${session.sessionInfo.user.userType eq 'ADMIN'}">
+    <aside class="left-sidebar">
+        <div class="scroll-sidebar">
+
+            <nav class="sidebar-nav">
+
+                <ul>
+                    <li class="nav-small-cap">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                        <span class="hide-menu">Movies</span>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                            <i class="mdi mdi-tune"></i>
+                            <span class="hide-menu">Admin Paneli</span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse  first-level">
+                            <li class="sidebar-item">
+                                <a th:href="@{/admin/create}" class="sidebar-link">
+                                <i class="mdi mdi-view-quilt"></i>
+                                <span class="hide-menu"> Ekle </span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a th:href="@{/admin/list}" class="sidebar-link">
+                                <i class="mdi mdi-view-quilt"></i>
+                                <span class="hide-menu">Listele</span>
+                                </a>
+                            </li>
+                       </ul>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+    </aside>
+</span>
+
+<span th:if="${session.sessionInfo.user.userType eq 'EMPLOYEE'}">
+    <aside class="left-sidebar">
+        <div class="scroll-sidebar">
+
+            <nav class="sidebar-nav">
+
+                <ul>
+                    <li class="sidebar-item">
+                        <a th:href="@{/employee/list}" class="sidebar-link">
+                            <i class="mdi mdi-view-quilt"></i>
+                            <span class="hide-menu">Listele</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+    </aside>
+</span>

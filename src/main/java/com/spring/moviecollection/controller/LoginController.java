@@ -2,7 +2,6 @@ package com.spring.moviecollection.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +20,7 @@ public class LoginController {
             modelAndView.addObject("error", "Kullanıcı adı veya şifre hatalı");
 
         if (nonNull(logout))
-            modelAndView.addObject("msg", "Başarıyla çıkış yaptın");
+            modelAndView.addObject("logout", "Başarıyla çıkış yaptın");
 
         return modelAndView;
     }
