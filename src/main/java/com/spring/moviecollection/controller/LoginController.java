@@ -22,6 +22,6 @@ public class LoginController {
         if (nonNull(logout))
             modelAndView.addObject("logout", "Başarıyla çıkış yaptın");
 
-        return modelAndView;
+            return modelAndView;
     }
 }

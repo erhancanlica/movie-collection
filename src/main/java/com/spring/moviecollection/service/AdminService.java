@@ -15,8 +15,6 @@ public interface AdminService {
 
     GeneralResponse createUser(CreateUserDto userDto);
 
-    GeneralResponse createAdmin(CreateUserDto userDto);
-
     GeneralResponse updateUser(CreateUserDto userDto);
 
     GeneralResponse deleteUser(CreateUserDto userDto);

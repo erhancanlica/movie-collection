@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,8 +33,6 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
 
     private final UserRepository userRepository;
-
-    private final AdminService adminService;
 
     private final EmployeeService employeeService;
 
@@ -88,7 +87,7 @@ public class AdminServiceImpl implements AdminService {
 
         else if (UserType.ADMIN.equals(userDto.getUserType())){
             try {
-                generalResponse = adminService.createAdmin(userDto);
+                generalResponse = createAdmin(userDto);
                 generalResponse.setMessage(Constants.success);
                 generalResponse.setResult(0);
             }catch (Exception ex){
@@ -100,45 +99,32 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public GeneralResponse createAdmin(CreateUserDto userDto) {
-        GeneralResponse response = GeneralResponse.builder().build();
+    public GeneralResponse updateUser(CreateUserDto userDto) {
+        GeneralResponse response = new GeneralResponse();
 
         Users user = Users.builder()
                 .id(userDto.getId())
                 .username(userDto.getUsername())
                 .password(userDto.getPassword())
+                .userType(userDto.getUserType())
                 .build();
-
-        Admins admins = Admins.builder()
-                .id(userDto.getUserId())
-                .adminName(userDto.getRoleName())
-                .user(user)
-                .build();
-        try {
-            userRepository.save(user);
-            adminRepository.save(admins);
-            response.setMessage(Constants.success);
-            response.setResult(0);
-        } catch (Exception ex) {
-            log.error("Error creating employee user : {}", ex);
-            response.setMessage(Constants.err);
-            response.setResult(1);
-        }
-
-        return response;
-    }
-
-    @Override
-    public GeneralResponse updateUser(CreateUserDto userDto) {
-        GeneralResponse response = new GeneralResponse();
 
             try {
-                employeeService.updateEmployee(userDto);
-                response.setMessage("update successful");
-                response.setResult(0);
-
+                if (UserType.ADMIN.equals(user.getUserType())) {
+                    Admins admin = Admins.builder()
+                            .id(userDto.getUserId())
+                            .adminName(userDto.getRoleName())
+                            .user(user)
+                            .build();
+                    adminRepository.save(admin);
+                    response.setMessage("update successful");
+                    response.setResult(0);
+                }
+                else if(UserType.EMPLOYEE.equals(user.getUserType())) {
+                    employeeService.updateEmployee(userDto, user);
+                    response.setMessage("update successful");
+                    response.setResult(0); }
             } catch (Exception e) {
-
                 response.setMessage("update failed");
                 response.setResult(1);
             }
@@ -178,8 +164,8 @@ public class AdminServiceImpl implements AdminService {
                         .user(user)
                         .build();
 
-                userRepository.delete(user);
                 adminRepository.delete(admin);
+
                 response.setMessage("deletion successful");
                 response.setResult(0);
 
@@ -189,6 +175,34 @@ public class AdminServiceImpl implements AdminService {
                 response.setResult(1);
             }
         }
+        return response;
+    }
+
+    private GeneralResponse createAdmin(CreateUserDto userDto) {
+        GeneralResponse response = GeneralResponse.builder().build();
+
+        Users user = Users.builder()
+                .id(userDto.getId())
+                .username(userDto.getUsername())
+                .password(userDto.getPassword())
+                .build();
+
+        Admins admins = Admins.builder()
+                .id(userDto.getUserId())
+                .adminName(userDto.getRoleName())
+                .user(user)
+                .build();
+        try {
+            userRepository.save(user);
+            adminRepository.save(admins);
+            response.setMessage(Constants.success);
+            response.setResult(0);
+        } catch (Exception ex) {
+            log.error("Error creating employee user : {}", ex);
+            response.setMessage(Constants.err);
+            response.setResult(1);
+        }
+
         return response;
     }
 }

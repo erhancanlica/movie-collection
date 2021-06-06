@@ -3,6 +3,7 @@ package com.spring.moviecollection.security;
 import com.spring.moviecollection.model.Admins;
 import com.spring.moviecollection.model.Employee;
 import com.spring.moviecollection.model.Users;
+import com.spring.moviecollection.repository.AdminRepository;
 import com.spring.moviecollection.service.AdminService;
 import com.spring.moviecollection.service.EmployeeService;
 import com.spring.moviecollection.service.UserService;

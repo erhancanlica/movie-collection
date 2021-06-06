@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,12 +33,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findByUser(Users user) {
-        return null;//employeeRepository.findByUser(user);
+        return employeeRepository.findByUser(user);
     }
 
     @Override
     public List<CreateUserDto> getAllEmployee() {
-        return null;
+        List<Employee> employees = employeeRepository.findAll();
+        List<CreateUserDto> userDtos = employees.stream().map((Employee employee)-> CreateUserDto.builder()
+                .id(employee.getUser().getId())
+                .userId(employee.getId())
+                .username(employee.getUser().getUsername())
+                .password(employee.getUser().getPassword())
+                .userType(employee.getUser().getUserType())
+                .roleName(employee.getEmployeeName())
+                .build())
+                .collect(Collectors.toList());
+        return userDtos;
     }
 
     @Override
@@ -70,30 +81,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void updateEmployee(CreateUserDto userDto) {
-        Users user = Users.builder()
-                .id(userDto.getId())
-                .username(userDto.getUsername())
-                .password(userDto.getPassword())
-                .userType(userDto.getUserType())
-                .build();
+    public void updateEmployee(CreateUserDto userDto, Users user) {
 
-        if (UserType.EMPLOYEE.equals(user.getUserType())) {
             Employee employee = Employee.builder()
                     .id(userDto.getUserId())
                     .employeeName(userDto.getRoleName())
                     .user(user)
                     .build();
             employeeRepository.save(employee);
-        }
-        else if (UserType.ADMIN.equals(user.getUserType())) {
-            Admins admin = Admins.builder()
-                    .id(userDto.getUserId())
-                    .adminName(userDto.getRoleName())
-                    .user(user)
-                    .build();
-            adminRepository.save(admin);
-        }
     }
 
     @Override
@@ -111,7 +106,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                     .user(user)
                     .build();
 
-            userRepository.delete(user);
             employeeRepository.delete(employee);
 
     }

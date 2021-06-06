@@ -15,7 +15,7 @@ public interface EmployeeService {
 
     GeneralResponse createEmploye(CreateUserDto createUserDto);
 
-    void updateEmployee(CreateUserDto userDto);
+    void updateEmployee(CreateUserDto userDto, Users user);
 
     void deleteEmployee(CreateUserDto userDto);
 }

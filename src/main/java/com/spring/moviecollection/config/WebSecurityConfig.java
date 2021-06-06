@@ -4,10 +4,10 @@ import com.spring.moviecollection.security.CustomFailureHandler;
 import com.spring.moviecollection.security.CustomSuccessHandler;
 import com.spring.moviecollection.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,9 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService userDetailsService;
 
-    private final CustomSuccessHandler customSuccessHandler;
-
-    private final CustomFailureHandler customFailureHandler;
+    @Autowired
+    private CustomSuccessHandler customSuccessHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -33,10 +32,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.addFilterBefore(new EncodingFilter(), ChannelProcessingFilter.class);
+
+        String[] resources = new String[]{
+                "/", "/home","/pictureCheckCode","/include/",
+                "/css/**","/icons/","/static/**","/images/**","/js/","/layer/,/resources/**"
+        };
+
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/resources/static/**",  "/registration").permitAll()
+                .antMatchers(resources).permitAll()
                 .antMatchers("/employee**").hasRole("EMPLOYEE")
                 .antMatchers("/admin**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -55,9 +59,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager customAuthenticationManager() throws Exception {
         return authenticationManager();
-    }
-    
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
  }
