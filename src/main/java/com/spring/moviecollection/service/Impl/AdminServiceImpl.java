@@ -1,7 +1,6 @@
 package com.spring.moviecollection.service.Impl;
 
 import com.spring.moviecollection.model.Admins;
-import com.spring.moviecollection.model.Employee;
 import com.spring.moviecollection.model.Users;
 import com.spring.moviecollection.model.dto.CreateUserDto;
 import com.spring.moviecollection.model.dto.GeneralResponse;
@@ -14,11 +13,11 @@ import com.spring.moviecollection.service.UserService;
 import com.spring.moviecollection.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,18 +26,22 @@ import static java.util.Objects.nonNull;
 @Service
 @Transactional
 @Slf4j
-@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
-    private final AdminRepository adminRepository;
+    @Autowired
+    private AdminRepository adminRepository;
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    private final EmployeeService employeeService;
+    @Autowired
+    private EmployeeService employeeService;
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Override
@@ -181,19 +184,21 @@ public class AdminServiceImpl implements AdminService {
     private GeneralResponse createAdmin(CreateUserDto userDto) {
         GeneralResponse response = GeneralResponse.builder().build();
 
-        Users user = Users.builder()
-                .id(userDto.getId())
-                .username(userDto.getUsername())
-                .password(userDto.getPassword())
-                .build();
 
-        Admins admins = Admins.builder()
-                .id(userDto.getUserId())
-                .adminName(userDto.getRoleName())
-                .user(user)
-                .build();
         try {
+            Users user = Users.builder()
+                    .username(userDto.getUsername())
+                    .password(userDto.getPassword())
+                    .userType(userDto.getUserType())
+                    .build();
+
             userRepository.save(user);
+
+            Admins admins = Admins.builder()
+                    .adminName(userDto.getRoleName())
+                    .user(user)
+                    .build();
+
             adminRepository.save(admins);
             response.setMessage(Constants.success);
             response.setResult(0);

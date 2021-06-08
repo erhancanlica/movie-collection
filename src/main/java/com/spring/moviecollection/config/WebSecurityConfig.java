@@ -17,10 +17,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomUserDetailsService userDetailsService;
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
     private CustomSuccessHandler customSuccessHandler;
@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         String[] resources = new String[]{
                 "/", "/home","/pictureCheckCode","/include/",
-                "/css/**","/icons/","/static/**","/images/**","/js/","/layer/,/resources/**"
+                "/css/**","/icons/","/assests/**","/static/**","/images/**","/js/**","/layer/,/resources/**"
         };
 
         httpSecurity

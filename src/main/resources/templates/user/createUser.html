@@ -8,8 +8,8 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Sign Up</title>
-    <link rel="stylesheet" th:href="@{../../resources/static/css/style.min.css}">
-    <link rel="stylesheet"  th:href="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.min.css}">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css}">
     <script th:src="@{https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js}"></script>
     <script th:src="@{https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js}"></script>
 
@@ -19,9 +19,9 @@
 
 <div id="main-wrapper">
 
-    <div th:insert="template/topHeader.html" />
+    <span th:include="template/topHeader.html" />
 
-    <div th:insert="template/leftSideBar.html" />
+    <span th:include="template/leftSideBar.html" />
 
     <div class="page-wrapper">
 
@@ -109,7 +109,7 @@
                     </div>
                 </div>
             </div>
-            <div th:insert="template/footer.html" />
+            <span th:include="template/footer.html" />
         </div>
     </div>
 </div>

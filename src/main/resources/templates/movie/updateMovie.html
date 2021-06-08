@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Sign Up</title>
+    <link rel="stylesheet" th:href="@{/css/style.min.css}">
+    <link rel="stylesheet" th:href="@{/css/css.chart.css}">
+    <link rel="stylesheet" th:href="@{/css/toastr.css}">
+    <link rel="stylesheet" th:href="@{/css/file-upload.css}">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css}">
+    <script th:src="@{https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js}"></script>
+    <script th:src="@{https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js}"></script>
+    <script type="text/javascript" th:src="@{https://code.jquery.com/jquery-1.10.2.min.js}"></script>
+</head>
+
+
+<body>
+
+<div id="main-wrapper">
+
+    <span th:include="template/topHeader.html"/>
+
+    <span th:include="template/leftSideBar.html"/>
+
+    <div class="page-wrapper">
+
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-5 align-self-center">
+                    <h4 class="page-title">Film İşlemleri</h4>
+                </div>
+                <div class="col-7 align-self-center">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    Dashboard
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:void(0)">Film
+                                    İşlemleri</a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <form id="createMovie">
+                            <div class="form-body">
+                                <div class="card-body">
+
+                                    <div class="row p-t-20">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-form-label">Film Adı</label>
+                                                <input type="text" class="form-control" id="movieName" name="movieName"
+                                                       placeholder="Film Adı">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group has-danger">
+                                                <label class="control-label col-form-label">Yayın Yılı</label>
+                                                <input type="text" class="form-control" id="publicationYear"
+                                                       name="publicationYear"
+                                                       placeholder="Yayın Yılı">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row p-t-20">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Film Fotoğrafı</label>
+                                                <div class="file-upload">
+                                                    <div class="file-select">
+                                                        <div class="file-select-button" id="fileName">Fotograf
+                                                            Secin...
+                                                        </div>
+                                                        <div class="file-select-name" id="noFile">
+                                                        </div>
+                                                        <input type="file" name="chooseFile" id="chooseFile">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-form-label">Medya</label>
+                                                <input type="text" class="form-control" id="media" name="media"
+                                                       placeholder="Yayın Yılı">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row p-t-20">
+                                        <div class="col-md-6">
+                                            <div class="form-group has-success">
+                                                <label class="control-label">Kategoriler</label>
+                                                <select class="js-example-basic-multiple" id="category[]"
+                                                        name="category[]" style="width: 100%;color: black"
+                                                        multiple="multiple" required>
+                                                    <span th:each="category : ${categories}">
+                                                        <option th:value="${category.id}"><span
+                                                                th:text="${category.categoryName}"/></option>
+                                                    </span>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group has-success">
+                                                <label class="control-label">Dil Seçenekleri</label>
+                                                <select class="js-example-basic-multiple" id="languages[]"
+                                                        name="languages[]" style="width: 100%;color: black"
+                                                        multiple="multiple" required>
+                                                    <span th:each="languageOption : ${languageOptions}">
+                                                        <option th:value="${languageOption.id}"><span
+                                                                th:text="${languageOption.language}"/></option>
+                                                    </span>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row p-t-20">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-form-label">Açıklama</label>
+                                                <textarea class="form-control" id="explanation" name="explanation"
+                                                          rows="2"
+                                                          placeholder="Açıklama"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr>
+                            <div class="card-body">
+                                <div class="action-form">
+                                    <div class="form-group m-b-0 text-right">
+                                        <button type="submit" class="btn btn-info waves-effect waves-light">Kaydet
+                                        </button>
+                                        <button type="reset" class="btn btn-dark waves-effect waves-light">İptal Et
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <span th:unless="${movies.id} == null"><
+            <div class="row">
+                <div class="col-3 align-self-center">
+                    <h4 class="page-title">Oyuncu Listesi</h4>
+                </div>
+            </div>
+
+            <div class="container-fluid mt-lg-3">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+
+                            <div class="form-body">
+                                <div class="card-body">
+                                    <div class="row p-t-20">
+
+                                        <table id="demo-foo-addrow"
+                                               class="table m-t-30 no-wrap table-hover contact-list"
+                                               data-page-size="10">
+                                            <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Kullanıcı Adı</th>
+                                                <th>Şifre</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                            <div th:each="tempUser: ${users}">
+
+                                                <tr>
+                                                    <td><span th:text="${tempUser.id}"
+                                                              class="label label-danger"/>
+                                                    </td>
+                                                    <td><span th:text="${tempUser.username}"
+                                                              class="label label-danger"/></td>
+                                                    <td><span th:text="${tempUser.password}"
+                                                              class="label label-danger"/></td>
+                                                    <td><span th:text="${tempUser.userType}"
+                                                              class="label label-danger"/></td>
+                                                    <td>
+                                                        <a class="updateHref"
+                                                           th:data-id="${tempUser.id}"
+                                                           th:data-userid="${tempUser.userId}"
+                                                           th:data-username="${tempUser.username}"
+                                                           th:data-password="${tempUser.password}"
+                                                           th:data-usertype="${tempUser.userType}"
+                                                           th:data-rolename="${tempUser.roleName}">
+                                                            <i class="fas fa-edit" data-toggle="tooltip"
+                                                               data-placement="bottom" title=""></i>
+                                                        </a>
+                                                    </td>
+
+                                                    <td>
+                                                        <a class="deleteHref"
+                                                           th:data-id="${tempUser.id}"
+                                                           th:data-userid="${tempUser.userId}"
+                                                           th:data-username="${tempUser.username}"
+                                                           th:data-password="${tempUser.password}"
+                                                           th:data-usertype="${tempUser.userType}"
+                                                           th:data-rolename="${tempUser.roleName}">
+                                                            <i class="fas fa-trash-alt" data-toggle="tooltip"
+                                                               data-placement="bottom"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </span>
+    </div>
+    <span th:include="template/footer.html"/>
+</div>
+
+<script>
+    $(function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    });
+
+    $('#chooseFile').bind('change', function () {
+        var filename = $("#chooseFile").val();
+        if (/^\s*$/.test(filename)) {
+            $(".file-upload").removeClass('active');
+            $("#noFile").text("No file chosen...");
+        } else {
+            $(".file-upload").addClass('active');
+            $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
+        }
+    });
+
+
+    $(document).ready(function () {
+
+        $("#createUser").submit(function (event) {
+            event.preventDefault();
+            var postData = $('#createUser').serializeObject();
+            $.ajax({
+                type: "POST",
+                url: "createUser",
+                data: JSON.stringify(postData),
+                contentType: "application/json",
+                success: function (response) {
+                    if (response.result == 0) {
+                        toastr.success(response.message)
+                        setTimeout(function () {
+                            location.reload()
+                        }, 500)
+                    } else {
+                        console.log(response.message)
+                        toastr.error(response.message)
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    toastr.error("Bilinmeyen Bir Hata oluştu")
+                }
+            })
+
+        });
+
+    });
+
+</script>
+
+<
+</body>
+>
+
+</html>

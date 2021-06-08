@@ -1,34 +1,31 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<header class="topbar">
-
-    <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-        <div class="navbar-header">
-            <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
-                <i class="ti-menu ti-close"></i>
-            </a>
-
-            <div class="navbar-brand">
-                <a href="/admin/" class="logo">
-                    <b class="logo-icon">
-                        <img src="../resources/assets/logo-icon.png" alt="homepage" class="dark-logo" />
-                        <img src="../resources/assets/logo-light-icon.png" alt="homepage" class="light-logo" />
-                    </b>
+<th xmlns:th="http://www.thymeleaf.org">
+    <header class="topbar">
+        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+            <div class="navbar-header">
+                <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
+                    <i class="ti-menu ti-close"></i>
                 </a>
-                <a class="sidebartoggler d-none d-md-block" href="javascript:void(0)" data-sidebartype="mini-sidebar">
-                    <i class="mdi mdi-toggle-switch mdi-toggle-switch-off font-20"></i>
-                </a>
-            </div>
 
-            <a class="sidebartoggler d-none d-md-block" href="javascript:void(0)" data-sidebartype="mini-sidebar">
-                <i class="mdi mdi-toggle-switch mdi-toggle-switch-off font-20"></i>
-            </a>
+                <div class="navbar-brand">
+                    <a href="/admin/" class="logo">
+                        <b class="logo-icon">
+                            <img th:src="@{/assets/logo-icon.png}" alt="homepage" class="dark-logo"/>
+                            <img th:src="@{/assets/logo-light-icon.png}" alt="homepage" class="light-logo"/>
+                        </b>
+                    </a>
+
+                    <a class="sidebartoggler d-none d-md-block" href="javascript:void(0)"
+                       data-sidebartype="mini-sidebar">
+                        <i class="mdi mdi-toggle-switch mdi-toggle-switch-off font-20"></i>
+                    </a>
+                </div>
+
+                <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                   data-toggle="collapse" data-target="#navbarSupportedContent"
+                   aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="ti-more"></i>
+                </a>
         </div>
-
-        <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent"
-           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="ti-more"></i>
-        </a>
 
 
         <div class="navbar-collapse collapse" id="navbarSupportedContent">
@@ -48,31 +45,29 @@
                 <li class="nav-item dropdown">
 
                     <a class="nav-link dropdown-toggle waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="m-l-5 font-bold d-none d-sm-inline-block">@{sessionInfo.user.username} <i class="mdi mdi-chevron-down"></i></span>
+                        <span th:text="${session.sessionInfo.user.username}" class="m-l-5 font-bold d-none d-sm-inline-block"> <i class="mdi mdi-chevron-down"></i></span>
                     </a>
 
-                    <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
+                    <div class="dropdown-menu dropdown-menu-right   user-dd animated flipInY">
                                 <span class="with-arrow">
                                     <span class="bg-primary"></span>
                                 </span>
                         <div class="d-flex no-block align-items-center p-15 bg-primary text-white m-b-10">
                             <div class="m-l-10">
-                                <h4 class="m-b-0"> @{sessionInfo.user.username}</h4>
+                                <h4 th:text="${session.sessionInfo.user.username}" class="m-b-0" />
                             </div>
                         </div>
+
                         <div class="profile-dis scrollable">
                             <a class="dropdown-item" href="javascript:void(0)">
                                 <i class="ti-user m-r-5 m-l-5"></i> Bilgilerim</a>
-
-                            <a class="dropdown-item" th:href="@{/admin/logout}"/>">
-                            <i class="fa fa-power-off m-r-5 m-l-5"></i> Cikis</a>
+                            <a class="dropdown-item" th:href="@{/admin/logout}">
+                                <i class="fa fa-power-off m-r-5 m-l-5"></i>Cikis</a>
                             <div class="dropdown-divider"></div>
                         </div>
                     </div>
-
                 </li>
             </ul>
-
         </div>
     </nav>
 </header>

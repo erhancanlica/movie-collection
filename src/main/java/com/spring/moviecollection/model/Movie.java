@@ -3,8 +3,7 @@ package com.spring.moviecollection.model;
 import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -25,19 +24,28 @@ public class Movie implements Serializable {
     @Column(name = "publication_year", nullable = false)
     private String publicationYear;
 
-    @Column(name = "category", nullable = false)
-    private String category;
-
     @Column(name = "explanation")
     private String explanation;
 
     @Column(name = "media")
     private String media;
 
-    @Column(name = "language_options")
-    private String languageOptions ;
+    @Lob
+    @Column(name = "data")
+    private byte[] image;
 
     @OneToMany(mappedBy = "movie")
     private Set<Actor> actors = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "movie_category",
+            joinColumns = { @JoinColumn(name = "movie_id")},
+            inverseJoinColumns = { @JoinColumn(name = "category_id") })
+    private List<Category> category = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "movie_language",
+            joinColumns = { @JoinColumn(name = "movie_id")},
+            inverseJoinColumns = { @JoinColumn(name = "language_options_id") })
+    private List<LanguageOption> language = new ArrayList<>();
 }

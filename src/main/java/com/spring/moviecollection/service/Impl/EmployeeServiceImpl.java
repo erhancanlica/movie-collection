@@ -13,6 +13,7 @@ import com.spring.moviecollection.service.EmployeeService;
 import com.spring.moviecollection.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,14 +23,16 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @Slf4j
-@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
-    private final AdminRepository adminRepository;
+    @Autowired
+    private AdminRepository adminRepository;
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public Employee findByUser(Users user) {
@@ -37,7 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<CreateUserDto> getAllEmployee() {
+    public List<CreateUserDto> getAll() {
         List<Employee> employees = employeeRepository.findAll();
         List<CreateUserDto> userDtos = employees.stream().map((Employee employee)-> CreateUserDto.builder()
                 .id(employee.getUser().getId())
@@ -55,19 +58,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     public GeneralResponse createEmploye(CreateUserDto userDto) {
         GeneralResponse response = GeneralResponse.builder().build();
 
-        Users user = Users.builder()
-                .id(userDto.getId())
-                .username(userDto.getUsername())
-                .password(userDto.getPassword())
-                .build();
-
-        Employee employee = Employee.builder()
-                .id(userDto.getUserId())
-                .employeeName(userDto.getRoleName())
-                .user(user)
-                .build();
         try {
+            Users user = Users.builder()
+                    .username(userDto.getUsername())
+                    .password(userDto.getPassword())
+                    .userType(userDto.getUserType())
+                    .build();
+
             userRepository.save(user);
+            Employee employee = Employee.builder()
+                    .id(userDto.getUserId())
+                    .employeeName(userDto.getRoleName())
+                    .user(user)
+                    .build();
             employeeRepository.save(employee);
             response.setMessage(Constants.success);
             response.setResult(0);

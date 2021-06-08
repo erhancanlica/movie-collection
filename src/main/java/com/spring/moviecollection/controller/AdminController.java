@@ -8,6 +8,7 @@ import com.spring.moviecollection.service.AdminService;
 import com.spring.moviecollection.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,19 +21,20 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequestMapping("/admin")
-@RequiredArgsConstructor
 public class AdminController {
 
-    private final AdminService adminService;
+    @Autowired
+    private AdminService adminService;
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    @GetMapping("/listUser")
+    @GetMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView getAll(HttpSession session){
         ModelAndView modelAndView = new ModelAndView("user/listUser");
         List<UserType> userTypeList = Arrays.asList(UserType.values());
-        List<CreateUserDto> users = adminService.getAll();
+        List<CreateUserDto> users = userService.getAll();
         modelAndView.addObject("users", users);
         modelAndView.addObject("userRoles", userTypeList);
         return modelAndView;
@@ -43,7 +45,7 @@ public class AdminController {
     public ModelAndView getCreateUser(HttpSession httpSession){
         ModelAndView modelAndView = new ModelAndView("user/createUser");
         List<UserType> userTypeList = Arrays.asList(UserType.values());
-        modelAndView.addObject("users", new Users());
+            modelAndView.addObject("users", new Users());
         modelAndView.addObject("userRoles", userTypeList);
         return modelAndView;
     }

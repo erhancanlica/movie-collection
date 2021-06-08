@@ -11,7 +11,7 @@ public interface EmployeeService {
 
     Employee findByUser(Users user);
 
-    List<CreateUserDto> getAllEmployee();
+    List<CreateUserDto> getAll();
 
     GeneralResponse createEmploye(CreateUserDto createUserDto);
 
