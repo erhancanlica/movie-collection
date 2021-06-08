@@ -1,9 +1,12 @@
 package com.spring.moviecollection.service.Impl;
 
+import com.spring.moviecollection.model.Actor;
+import com.spring.moviecollection.model.Category;
+import com.spring.moviecollection.model.LanguageOption;
 import com.spring.moviecollection.model.Movie;
-import com.spring.moviecollection.model.dto.CategoryDto;
-import com.spring.moviecollection.model.dto.GeneralResponse;
-import com.spring.moviecollection.model.dto.MovieDto;
+import com.spring.moviecollection.model.dto.*;
+import com.spring.moviecollection.repository.CategoryRepository;
+import com.spring.moviecollection.repository.LanguageOptionRepository;
 import com.spring.moviecollection.repository.MovieRepository;
 import com.spring.moviecollection.service.MovieService;
 import com.spring.moviecollection.utils.Constants;
@@ -11,9 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @Slf4j
@@ -22,6 +29,50 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private LanguageOptionRepository languageOptionRepository;
+
+    @Override
+    public MovieDto findById(Long id) {
+        Optional<Movie> optionalMovie = movieRepository.findById(id);
+        Movie movie = null;
+        if (optionalMovie.isPresent())
+            movie = optionalMovie.get();
+        else
+            throw new RuntimeException("Movie not found for id : " + id);
+
+        MovieDto movieDto =MovieDto.builder()
+                .id(movie.getId())
+                .movieName(movie.getMovieName())
+                .publicationYear(movie.getPublicationYear())
+                .explanation(movie.getExplanation())
+                .media(movie.getMedia())
+                .category(movie.getCategory().stream().map((Category category) -> CategoryDto
+                        .builder()
+                        .id(category.getId())
+                        .categoryName(category.getCategoryName())
+                        .build()).collect(Collectors.toList()))
+                .language(movie.getLanguage().stream().map((LanguageOption languageOption) -> LanguageDto
+                        .builder()
+                        .id(languageOption.getId())
+                        .language(languageOption.getLanguage())
+                        .build()).collect(Collectors.toList()))
+                .actors(movie.getActors().stream().map((Actor actor) -> ActorDto
+                        .builder()
+                        .actorID(actor.getId())
+                        .movieID(actor.getMovie().getId())
+                        .firstName(actor.getFirstName())
+                        .lastName(actor.getLastName())
+                        .role(actor.getRole())
+                        .build()).collect(Collectors.toList()))
+                .build();
+
+        return movieDto;
+    }
 
     @Override
     public List<MovieDto> findAll() {
@@ -32,24 +83,47 @@ public class MovieServiceImpl implements MovieService {
                 .publicationYear(movie.getPublicationYear())
                 .explanation(movie.getExplanation())
                 .media(movie.getMedia())
-                .actors(movie.getActors())
+                .category(movie.getCategory().stream().map((Category category) -> CategoryDto
+                                                      .builder()
+                                                      .id(category.getId())
+                                                      .categoryName(category.getCategoryName())
+                                                      .build()).collect(Collectors.toList()))
+                .language(movie.getLanguage().stream().map((LanguageOption languageOption) -> LanguageDto
+                        .builder()
+                        .id(languageOption.getId())
+                        .language(languageOption.getLanguage())
+                        .build()).collect(Collectors.toList()))
+                .actors(movie.getActors().stream().map((Actor actor) -> ActorDto
+                        .builder()
+                        .actorID(actor.getId())
+                        .movieID(actor.getMovie().getId())
+                        .firstName(actor.getFirstName())
+                        .lastName(actor.getLastName())
+                        .role(actor.getRole())
+                        .build()).collect(Collectors.toList()))
                 .build())
                 .collect(Collectors.toList());
         return movieDtos;
     }
 
     @Override
-    public GeneralResponse createMovie(MovieDto movieDto) {
+    public GeneralResponse createMovie(CreateMovieDto createMovieDto) {
         GeneralResponse response = GeneralResponse.builder().build();
 
-        Movie movie = Movie.builder()
-                .movieName(movieDto.getMovieName())
-                .publicationYear(movieDto.getPublicationYear())
-                .image(movieDto.getImage())
-                .explanation(movieDto.getExplanation())
-                .media(movieDto.getMedia())
-                .build();
+        List<Long> category = createMovieDto.getCategory();
+        List<Long> language = createMovieDto.getLanguage();
 
+        List<Category> categories = categoryRepository.findAllById(category);
+        List<LanguageOption> languages = languageOptionRepository.findAllById(language);
+
+        Movie movie = Movie.builder()
+                .movieName(createMovieDto.getMovieName())
+                .publicationYear(createMovieDto.getPublicationYear())
+                .explanation(createMovieDto.getExplanation())
+                .media(createMovieDto.getMedia())
+                .category(categories)
+                .language(languages)
+                .build();
         try{
             movieRepository.save(movie);
             response.setMessage(Constants.success);
@@ -62,23 +136,32 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public GeneralResponse updateMovie(MovieDto movieDto) {
+    public GeneralResponse updateMovie(CreateMovieDto createMovieDto) {
         GeneralResponse response = GeneralResponse.builder().build();
 
+        List<Long> category = createMovieDto.getCategory();
+        List<Long> language = createMovieDto.getLanguage();
+
+        List<Category> categories = categoryRepository.findAllById(category);
+        List<LanguageOption> languages = languageOptionRepository.findAllById(language);
+
         Movie movie = Movie.builder()
-                .id(movieDto.getId())
-                .movieName(movieDto.getMovieName())
-                .explanation(movieDto.getExplanation())
-                .media(movieDto.getMedia())
+                .id(createMovieDto.getId())
+                .movieName(createMovieDto.getMovieName())
+                .publicationYear(createMovieDto.getPublicationYear())
+                .explanation(createMovieDto.getExplanation())
+                .media(createMovieDto.getMedia())
+                .category(categories)
+                .language(languages)
                 .build();
 
         try{
             movieRepository.save(movie);
-            response.setMessage(Constants.success);
             response.setResult(0);
+            response.setMessage(Constants.success);
         }catch (Exception ex){
-            response.setMessage(Constants.err);
             response.setResult(1);
+            response.setMessage(Constants.err);
         }
         return response;
     }

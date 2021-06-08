@@ -3,14 +3,15 @@ package com.spring.moviecollection.security;
 import com.spring.moviecollection.model.Admins;
 import com.spring.moviecollection.model.Employee;
 import com.spring.moviecollection.model.Users;
-import com.spring.moviecollection.repository.AdminRepository;
 import com.spring.moviecollection.service.AdminService;
 import com.spring.moviecollection.service.EmployeeService;
 import com.spring.moviecollection.service.UserService;
 import com.spring.moviecollection.utils.Constants;
-import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -28,16 +29,18 @@ import java.util.List;
 
 @Service("customSuccessHandler")
 @Slf4j
-@RequiredArgsConstructor
 public class CustomSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    private final EmployeeService employeeService;
+    @Autowired
+    private EmployeeService employeeService;
 
-    private final AdminService adminService;
+    @Autowired
+    private AdminService adminService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws  IOException {

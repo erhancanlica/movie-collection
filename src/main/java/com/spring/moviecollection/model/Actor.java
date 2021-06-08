@@ -29,4 +29,5 @@ public class Actor implements Serializable {
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
+
 }

@@ -30,12 +30,8 @@ public class Movie implements Serializable {
     @Column(name = "media")
     private String media;
 
-    @Lob
-    @Column(name = "data")
-    private byte[] image;
-
     @OneToMany(mappedBy = "movie")
-    private Set<Actor> actors = new HashSet<>();
+    private List<Actor> actors = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "movie_category",

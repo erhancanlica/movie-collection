@@ -68,6 +68,7 @@
                                         <th>Film Adı</th>
                                         <th>Yayın Yılı</th>
                                         <th>Açıklama</th>
+                                        <th>Oyuncular</th>
                                         <th>Medya</th>
                                         <th>Kategori</th>
                                         <th>Dil Seçenekleri</th>
@@ -80,24 +81,31 @@
 
                                     <div th:each="movie: ${movies}">
                                         <tr>
-                                            <td><span th:src="${movie.image}" class="label label-info"/></td>
+                                            <td><span class="label label-info"/></td>
                                             <td><span th:text="${movie.getMovieName()}" class="label label-info"/></td>
-                                            <td><span th:text="${movie.getPublicationYear()}" class="label label-info"/>
-                                            </td>
-                                            <td><span th:text="${movie.getExplanation()}" class="label label-info"/>
-                                            </td>
+                                            <td><span th:text="${movie.getPublicationYear()}" class="label label-info"/></td>
+                                            <td><span th:text="${movie.getExplanation()}" class="label label-info"/></td>
+                                            <td><span th:each="actor: ${movie.getActors()}">
+                                                <span th:text="${actor.toString()}" class="label label-info"/>
+                                            </span></td>
                                             <td><span th:text="${movie.getMedia()}" class="label label-info"/></td>
-                                            <td><span th:text="${movie.getCategory()}" class="label label-info"/></td>
-                                            <td><span th:text="${movie.getLanguage()}" class="label label-info"/></td>
+
+                                            <td><span th:each="category: ${movie.getCategory()}">
+                                                <span th:text="${category.getCategoryName()}" class="label label-info"/>
+                                            </span></td>
+
+                                            <td><span th:each="language: ${movie.getLanguage()}">
+                                                    <span th:text="${language.getLanguage()}" class="label label-info"/>
+                                            </span></td>
                                             <td>
-                                                <a class="updateHref" th:data-id="${movie.id}">
-                                                <i class="fas fa-edit" data-toggle="tooltip"
-                                                   data-placement="bottom" title=""></i>
+                                                <a th:href="@{'/employee/movie?id=' + ${movie.id}}">
+                                                    <i class="fas fa-edit" data-toggle="tooltip"
+                                                       data-placement="bottom" title=""></i>
                                                 </a>
                                             </td>
 
                                             <td>
-                                                <a class="deleteHref" th:data-id="${movie.id}">
+                                                <a href="#" class="deleteHref" th:data-id="${movie.id}">
                                                     <i class="fas fa-trash-alt" data-toggle="tooltip"
                                                        data-placement="bottom"></i>
                                                 </a>
@@ -154,16 +162,6 @@
 
     $(document).ready(function () {
 
-        $(".updateHref").click(function () {
-           var id = $(this).data('id');
-            $.ajax({
-                type: "PUT",
-                contentType: "application/json; charset=utf-8",
-                url: "employee/movie?id=" + id,
-                timeout: 100000,
-            });
-        })
-
         $(".deleteHref").click(function () {
             $('#deleteRecordModal').data('id', $(this).data('id')).modal('show');
         })
@@ -189,7 +187,8 @@
                     toastr.error("Bilinmeyen Bir Hata oluştu")
                 }
             });
-        })});
+        })
+    });
 </script>
 
 </body>

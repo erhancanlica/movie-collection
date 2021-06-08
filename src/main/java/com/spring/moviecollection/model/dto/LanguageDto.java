@@ -8,8 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LanguageDto {
-
     public Long id;
-
     private String language;
 }

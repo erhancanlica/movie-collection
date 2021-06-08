@@ -6,7 +6,6 @@ import com.spring.moviecollection.model.dto.GeneralResponse;
 import com.spring.moviecollection.model.enums.UserType;
 import com.spring.moviecollection.service.AdminService;
 import com.spring.moviecollection.service.UserService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

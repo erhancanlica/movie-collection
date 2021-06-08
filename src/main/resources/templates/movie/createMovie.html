@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -51,7 +50,7 @@
             </div>
         </div>
 
-        <div class="container-fluid mt-3">
+        <div class="container-fluid mt-2">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
@@ -63,7 +62,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-form-label">Film Adı</label>
-                                                <input type="text" class="form-control" id="movieName" name="movieName"
+                                                <input type="text" th:value="${movies.movieName}" class="form-control"
+                                                       id="movieName" name="movieName"
                                                        placeholder="Film Adı">
                                             </div>
                                         </div>
@@ -71,7 +71,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group has-danger">
                                                 <label class="control-label col-form-label">Yayın Yılı</label>
-                                                <input type="text" class="form-control" id="publicationYear"
+                                                <input type="text" th:value="${movies.publicationYear}"
+                                                       class="form-control" id="publicationYear"
                                                        name="publicationYear"
                                                        placeholder="Yayın Yılı">
                                             </div>
@@ -79,26 +80,27 @@
                                     </div>
 
                                     <div class="row p-t-20">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Film Fotoğrafı</label>
-                                                <div class="file-upload">
-                                                    <div class="file-select">
-                                                        <div class="file-select-button" id="fileName">Fotograf
-                                                            Secin...
-                                                        </div>
-                                                        <div class="file-select-name" id="noFile">
-                                                        </div>
-                                                        <input type="file" name="chooseFile" id="chooseFile">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <!--                                        <div class="col-md-6">-->
+                                        <!--                                            <div class="form-group">-->
+                                        <!--                                                <label class="form-label">Film Fotoğrafı</label>-->
+                                        <!--                                                <div class="file-upload">-->
+                                        <!--                                                    <div class="file-select">-->
+                                        <!--                                                        <div class="file-select-button" id="fileName">Fotograf-->
+                                        <!--                                                            Secin...-->
+                                        <!--                                                        </div>-->
+                                        <!--                                                        <div class="file-select-name" id="noFile">-->
+                                        <!--                                                        </div>-->
+                                        <!--                                                        <input type="file" name="chooseFile" id="chooseFile">-->
+                                        <!--                                                    </div>-->
+                                        <!--                                                </div>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
 
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-form-label">Medya</label>
-                                                <input type="text" class="form-control" id="media" name="media"
+                                                <input type="text" th:value="${movies.media}" class="form-control"
+                                                       id="media" name="media"
                                                        placeholder="Yayın Yılı">
                                             </div>
                                         </div>
@@ -138,23 +140,26 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-form-label">Açıklama</label>
-                                                <textarea class="form-control" id="explanation" name="explanation"
+                                                <textarea class="form-control" th:field="${movies.explanation}"
+                                                          id="explanation" name="explanation"
                                                           rows="2"
                                                           placeholder="Açıklama"></textarea>
+                                                <input type="hidden" th:data-id="${movies.id}" th:value="${movies.id}"
+                                                       class="form-control" id="id" name="id"/>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            </div>
-                            <hr>
-                            <div class="card-body">
-                                <div class="action-form">
-                                    <div class="form-group m-b-0 text-right">
-                                        <button type="submit" class="btn btn-info waves-effect waves-light">Kaydet
-                                        </button>
-                                        <button type="reset" class="btn btn-dark waves-effect waves-light">İptal Et
-                                        </button>
+                                </div>
+                                <hr>
+                                <div class="card-body">
+                                    <div class="action-form">
+                                        <div class="form-group m-b-0 text-right">
+                                            <button type="submit" class="btn btn-info waves-effect waves-light">Kaydet
+                                            </button>
+                                            <button type="reset" class="btn btn-dark waves-effect waves-light">İptal Et
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -162,9 +167,142 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header bg-theme">
+                            <h4 class="m-b-0 text-white">Aktor Listesi</h4>
+                        </div>
+
+                        <div class="form-body">
+                            <div class="card-body">
+                                <div class="row p-t-20">
+                                    <div class="float-right mb-2">
+                                        <a class="addUser" data-toggle="modal" data-target="#createActorModel">
+                                            <i class="fa fa-plus">Aktor Ekle</i>
+                                        </a>
+                                    </div>
+                                    <table id="demo-foo-addrow"
+                                           class="table m-t-30 no-wrap table-hover contact-list"
+                                           data-page-size="10">
+                                        <thead>
+                                        <tr>
+                                            <th>Isim</th>
+                                            <th>Soyisim</th>
+                                            <th>Rol</th>
+                                            <th>Update</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                        <div th:each="actor: ${movies.getActors()}">
+
+                                            <tr>
+                                                <td><span th:text="${actor.firstName}" class="label label-danger"/>
+                                                </td>
+                                                <td><span th:text="${actor.lastName}" class="label label-danger"/>
+                                                </td>
+                                                <td><span th:text="${actor.role}" class="label label-danger"/>
+                                                </td>
+                                                <td>
+                                                    <a class="updateActorHref"
+                                                       th:data-actor="${actor.actorID}"
+                                                       th:data-movie="${movies.id}"
+                                                       th:data-firstname="${actor.firstName}"
+                                                       th:data-lastname="${actor.lastName}"
+                                                       th:data-role="${actor.role}">
+                                                        <i class="fas fa-edit" data-toggle="tooltip"
+                                                           data-placement="bottom" title=""></i>
+                                                    </a>
+                                                </td>
+
+                                                <td>
+                                                    <a class="deleteActorHref"
+                                                       th:data-id="${actor.actorID}">
+                                                        <i class="fas fa-trash-alt" data-toggle="tooltip"
+                                                           data-placement="bottom"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <span th:include="template/footer.html"/>
+</div>
+
+
+<div class="modal fade modal-profile" id="createActorModel" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Aktor Ekle</h5>
+            </div>
+            <div class="modal-body">
+                <form id="createActorForm" method="post">
+                    <div class="form-group row">
+                        <label  class="col-sm-2 col-form-label">İsim</label>
+                        <div class="col-sm-10">
+                            <input id="firstName" type="text" class="form-control" name="firstName" placeholder="İsim">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label  class="col-sm-2 col-form-label">Soy İsim</label>
+                        <div class="col-sm-10">
+                            <input id="lastName" type="text" class="form-control" name="lastName" placeholder="Soy İsim">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label  class="col-sm-2 col-form-label">Rol</label>
+                        <div class="col-sm-10">
+                            <input id="role" type="text" class="form-control" name="role" placeholder="rol">
+                            <input type="text" style="visibility: hidden" id="actorID" name="actorID">
+                            <input type="text" style="visibility: hidden" th:value="${movies.id}" id="movieID" name="movieID">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="actorCreateBtn">Kaydet</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteRecordModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Kaydı silmek üzeresiniz!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                Silmek istediğinize emin misiniz ?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn waves-effect waves-light btn-danger" id="btnDeleteYes">Evet</button>
+                <button type="button" class="btn waves-effect waves-light btn-inf" data-dismiss="modal">Hayır</button>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <script>
@@ -176,28 +314,20 @@
         });
     });
 
-    $('#chooseFile').bind('change', function () {
-        var filename = $("#chooseFile").val();
-        if (/^\s*$/.test(filename)) {
-            $(".file-upload").removeClass('active');
-            $("#noFile").text("No file chosen...");
-        } else {
-            $(".file-upload").addClass('active');
-            $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
-        }
-    });
     $(document).ready(function () {
 
-        $("#createMovie").submit(function (event) {
+        $("#createMovie").submit(function () {
             event.preventDefault();
             var postData = $('#createMovie').serializeObject();
+            var type = $('#createMovie #id').data('id') == null ? "POST" : "PUT";
             $.ajax({
-                type: "POST",
+                type: type,
                 url: "movie",
                 data: JSON.stringify(postData),
-                enctype: "multipart/form-data",
                 contentType: "application/json",
-                success: function (response) {
+                timeout : 100000,
+                success: function(response) {
+                    location.reload()
                     if (response.result == 0) {
                         toastr.success(response.message)
                         setTimeout(function () {
@@ -213,6 +343,89 @@
                     toastr.error("Bilinmeyen Bir Hata oluştu")
                 }
             })
+        });
+
+        $(".deleteActorHref").click(function () {
+            $('#deleteRecordModal').data('id',$(this).data('id')).modal('show');
+        })
+
+        $(".updateActorHref").click(function () {
+            $('#createActorModel #actorID').val($(this).data('actor'));
+            $('#createActorModel #movieID').val($(this).data('movie'));
+            $('#createActorModel #firstName').val($(this).data('firstname'));
+            $('#createActorModel #lastName').val($(this).data('lastname'));
+            $('#createActorModel #role').val($(this).data('role'));
+            $('#createActorModel').data('type',"update").modal('show');
+        })
+
+        $('#createActorModel').on('hidden.bs.modal', function (e) {
+            $('#createActorForm #actorID #firstName #lastName #role').trigger("reset");
+            $('#createActorModel').removeData('type')
+        });
+
+        $("#btnDeleteYes").click(function () {
+            var id = $('#deleteRecordModal').data('id');
+            $.ajax({
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                url: "actor?id="+id,
+                timeout : 100000,
+                success: function(response) {
+                    if(response.result == 0){
+                        toastr.success(response.message)
+                        setTimeout(function(){
+                            location.reload()
+                        },500)
+                    }
+                    else {
+                        toastr.error(response.message)
+                    }
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    toastr.error("Bilinmeyen Bir Hata oluştu")
+                }
+            });
+        })
+
+        $("#actorCreateBtn").click(function () {
+            event.preventDefault();
+            var postData = $('#createActorForm').serializeObject();
+            var type = $('#createActorModel').data('type') == 'update' ? 'put' : 'post';
+            $.ajax({
+                type: type,
+                url: "actor?id",
+                data: JSON.stringify(postData),
+                contentType: "application/json",
+                success: function(response) {
+                    if(response.result == 0){
+                        toastr.success(response.message)
+                        setTimeout(function(){
+                            location.reload()
+                        },500)
+                    }
+                    else {
+                        toastr.error(response.message)
+                    }
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    toastr.error("Bilinmeyen Bir Hata oluştu")
+                }
+            })
+
+        });
+
+
+        $('#chooseFile').bind('change', function () {
+            var filename = $("#chooseFile").val();
+            if (/^\s*$/.test(filename)) {
+                $(".file-upload").removeClass('active');
+                $("#noFile").text("No file chosen...");
+            } else {
+                $(".file-upload").addClass('active');
+                $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
+            }
         });
     });
 </script>
