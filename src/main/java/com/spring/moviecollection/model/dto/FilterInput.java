@@ -7,8 +7,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-public class CategoryDto {
-    public Long id;
-    private String categoryName;
+public class FilterInput {
+    private String value;
 }

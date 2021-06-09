@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +38,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findByUser(Users user) {
         return employeeRepository.findByUser(user);
+    }
+
+    @Override
+    public Optional<Employee> findById(Long id) {
+        Optional<Employee> employee = employeeRepository.findById(id);
+        return employee;
     }
 
     @Override
@@ -94,12 +101,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public void deleteById(Long id) {
+        employeeRepository.deleteById(id);
+    }
+
+    @Override
     public void deleteEmployee(CreateUserDto userDto) {
         Users user = Users.builder()
                 .id(userDto.getId())
                 .username(userDto.getUsername())
                 .password(userDto.getPassword())
-                .userType(userDto.getUserType())
+                .userType(UserType.EMPLOYEE)
                 .build();
 
             Employee employee = Employee.builder()
@@ -111,5 +123,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeRepository.delete(employee);
 
     }
+
 
 }

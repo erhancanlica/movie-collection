@@ -1,6 +1,7 @@
 package com.spring.moviecollection.service.Impl;
 
 import com.spring.moviecollection.model.Admins;
+import com.spring.moviecollection.model.Employee;
 import com.spring.moviecollection.model.Users;
 import com.spring.moviecollection.model.dto.CreateUserDto;
 import com.spring.moviecollection.model.dto.GeneralResponse;
@@ -19,9 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
 
 @Service
 @Transactional
@@ -42,7 +45,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     @Override
     public Admins findByUser(Users user) {
@@ -120,6 +122,8 @@ public class AdminServiceImpl implements AdminService {
                             .adminName(userDto.getRoleName())
                             .user(user)
                             .build();
+
+
                     adminRepository.save(admin);
                     response.setMessage("update successful");
                     response.setResult(0);
@@ -159,7 +163,7 @@ public class AdminServiceImpl implements AdminService {
                         .id(userDto.getId())
                         .username(userDto.getUsername())
                         .password(userDto.getPassword())
-                        .userType(userDto.getUserType())
+                        .userType(UserType.ADMIN)
                         .build();
 
                 Admins admin = Admins.builder()
@@ -182,9 +186,9 @@ public class AdminServiceImpl implements AdminService {
         return response;
     }
 
+
     private GeneralResponse createAdmin(CreateUserDto userDto) {
         GeneralResponse response = GeneralResponse.builder().build();
-
 
         try {
             Users user = Users.builder()
@@ -211,4 +215,6 @@ public class AdminServiceImpl implements AdminService {
 
         return response;
     }
+
+
 }

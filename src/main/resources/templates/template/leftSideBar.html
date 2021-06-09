@@ -1,5 +1,4 @@
 <a xmlns:th="http://www.thymeleaf.org">
-    <!--    <div th:if="${session.sessionInfo.user.userType} eq 'ADMIN'">-->
     <aside class="left-sidebar">
         <div class="scroll-sidebar">
             <nav class="sidebar-nav">
@@ -8,52 +7,71 @@
                         <i class="mdi mdi-dots-horizontal"></i>
                         <span class="hide-menu">PANEL</span>
                     </li>
+                    <div th:if="${session.sessionInfo.user.userType.role == 'ROLE_ADMIN'}">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                               aria-expanded="false">
+                                <i class="mdi mdi-tune"></i>
+                                <span class="hide-menu">Admin Paneli</span>
+                            </a>
 
-                    <li class="sidebar-item">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
-                           aria-expanded="false">
-                            <i class="mdi mdi-tune"></i>
-                            <span class="hide-menu">Admin Paneli</span>
-                        </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="/admin/createUser" class="sidebar-link">
+                                        <i class="mdi mdi-view-quilt"></i>
+                                        <span class="hide-menu"> Kullanıcı Ekle </span>
+                                    </a>
+                                </li>
 
-                        <ul aria-expanded="false" class="collapse first-level">
-                            <li class="sidebar-item">
-                                <a href="/admin/createUser" class="sidebar-link">
-                                    <i class="mdi mdi-view-quilt"></i>
-                                    <span class="hide-menu"> Kullanıcı Ekle </span>
-                                </a>
-                            </li>
+                                <li class="sidebar-item">
+                                    <a href="/admin/" class="sidebar-link">
+                                        <i class="mdi mdi-view-quilt"></i>
+                                        <span class="hide-menu"> Kullanıcı Listele </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-                            <li class="sidebar-item">
-                                <a href="/admin/" class="sidebar-link">
-                                    <i class="mdi mdi-view-quilt"></i>
-                                    <span class="hide-menu"> Kullanıcı Listele </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                               aria-expanded="false">
+                                <i class="mdi mdi-tune"></i>
+                                <span class="hide-menu">Kullanıcı Paneli</span>
+                            </a>
 
-                    <li class="sidebar-item">
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
-                           aria-expanded="false">
-                            <i class="mdi mdi-tune"></i>
-                            <span class="hide-menu">Kullanıcı Paneli</span>
-                        </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="/employee/" class="sidebar-link">
+                                        <i class="mdi mdi-view-quilt"></i>
+                                        <span class="hide-menu"> Filmler </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </div>
 
-                        <ul aria-expanded="false" class="collapse first-level">
-                            <li class="sidebar-item">
-                                <a href="/employee/" class="sidebar-link">
-                                    <i class="mdi mdi-view-quilt"></i>
-                                    <span class="hide-menu"> Filmler </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    <div th:if="${session.sessionInfo.user.userType.role == 'ROLE_EMPLOYEE'}">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                               aria-expanded="false">
+                                <i class="mdi mdi-tune"></i>
+                                <span class="hide-menu">Kullanıcı Paneli</span>
+                            </a>
+
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="/employee/" class="sidebar-link">
+                                        <i class="mdi mdi-view-quilt"></i>
+                                        <span class="hide-menu"> Filmler </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </div>
                 </ul>
             </nav>
         </div>
     </aside>
-    <!--    </div>-->
 </a>
 
 

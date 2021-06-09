@@ -1,16 +1,15 @@
 package com.spring.moviecollection.controller;
 
-import com.spring.moviecollection.model.dto.ActorDto;
-import com.spring.moviecollection.model.dto.CreateMovieDto;
-import com.spring.moviecollection.model.dto.GeneralResponse;
-import com.spring.moviecollection.model.dto.MovieDto;
+import com.spring.moviecollection.model.dto.*;
 import com.spring.moviecollection.service.ActorService;
 import com.spring.moviecollection.service.CategoryService;
 import com.spring.moviecollection.service.LanguageOptionService;
 import com.spring.moviecollection.service.MovieService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,6 +38,7 @@ public class EmployeeController {
     @GetMapping("/")
     public ModelAndView dashboard(HttpSession httpSession){
         ModelAndView modelAndView = new ModelAndView("movie/dashboard");
+        modelAndView.addObject("filterInput", new FilterInput());
         modelAndView.addObject("movies", movieService.findAll());
         return modelAndView;
     }
@@ -57,6 +57,26 @@ public class EmployeeController {
         return modelAndView;
     }
 
+    @PostMapping("/movie/sort")
+    public ModelAndView sortMovie(@ModelAttribute FilterInput filterInput, ModelAndView modelAndView) {
+        modelAndView.setViewName("movie/dashboard");
+        if (filterInput.getValue().equals("default"))
+            modelAndView.addObject("movies", movieService.findAll());
+        else
+            modelAndView.addObject("movies", movieService.sortByMovieOrYear(filterInput.getValue()));
+        return modelAndView;
+    }
+
+    @PostMapping("/movie/search")
+    public ModelAndView searchMovie(@ModelAttribute FilterInput filterInput, ModelAndView modelAndView) {
+        modelAndView.setViewName("movie/dashboard");
+        if (filterInput.getValue().equals(""))
+            modelAndView.addObject("movies", movieService.findAll());
+        else
+            modelAndView.addObject("movies", movieService.findBySearch(filterInput.getValue()));
+        return modelAndView;
+    }
+
     @PostMapping("/movie")
     @ResponseBody
     public GeneralResponse createMovie(@RequestBody CreateMovieDto createMovieDto) {
@@ -71,6 +91,7 @@ public class EmployeeController {
 
     @DeleteMapping("/movie")
     @ResponseBody
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public GeneralResponse deleteMovie(@RequestParam Long id){
         return movieService.deleteMovie(id);
     }
@@ -89,6 +110,7 @@ public class EmployeeController {
 
     @DeleteMapping("/actor")
     @ResponseBody
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public GeneralResponse deleteActor(@RequestParam Long id){
         return actorService.deleteActor(id);
     }

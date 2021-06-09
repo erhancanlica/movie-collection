@@ -124,13 +124,17 @@
                                                         name="category[]" style="width: 100%;color: black"
                                                         multiple="multiple" required>
                                                             <span th:each="category : ${categories}">
-                                                                <option th:value="${category.id}">
+                                                                <option th:value="${category.id}"
+                                                                        th:selected="${#lists.contains(movies.category, category)}">
                                                                     <span th:text="${category.categoryName}"/>
                                                                 </option>
                                                             </span>
+
+
                                                 </select>
                                             </div>
                                         </div>
+
 
                                         <div class="col-md-6">
                                             <div class="form-group has-success">
@@ -138,11 +142,14 @@
                                                 <select class="js-multiple-select form-control" id="languages[]"
                                                         name="language[]" style="width: 100%;color: black"
                                                         multiple="multiple" required>
-                                                            <span th:each="languageOption: ${languageOptions}">
-                                                                <option th:value="${languageOption.id}">
-                                                                    <span th:text="${languageOption.language}" />
-                                                                </option>
-                                                            </span>
+
+                                                       <span th:each="languageOption: ${languageOptions}">
+                                                         <option th:value="${languageOption.id}"
+                                                                 th:selected="${#lists.contains(movies.language, languageOption)}">
+                                                                <span th:text="${languageOption.language}" />
+                                                         </option>
+                                                        </span>
+
                                                 </select>
                                             </div>
                                         </div>
@@ -401,7 +408,7 @@
                     if (response.result == 0) {
                         toastr.success(response.message)
                         setTimeout(function () {
-                            window.location.href="/employee/"
+                            window.location.href = "/employee/"
                         }, 500)
                     } else {
                         console.log(response.message)

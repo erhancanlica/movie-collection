@@ -6,10 +6,14 @@ import com.spring.moviecollection.model.dto.CreateUserDto;
 import com.spring.moviecollection.model.dto.GeneralResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeService {
 
+
     Employee findByUser(Users user);
+
+    Optional<Employee> findById(Long id);
 
     List<CreateUserDto> getAll();
 
@@ -18,4 +22,6 @@ public interface EmployeeService {
     void updateEmployee(CreateUserDto userDto, Users user);
 
     void deleteEmployee(CreateUserDto userDto);
+
+    void deleteById(Long id);
 }

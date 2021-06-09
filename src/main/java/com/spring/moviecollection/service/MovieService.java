@@ -1,10 +1,8 @@
 package com.spring.moviecollection.service;
 
-import com.spring.moviecollection.model.Movie;
 import com.spring.moviecollection.model.dto.CreateMovieDto;
 import com.spring.moviecollection.model.dto.GeneralResponse;
 import com.spring.moviecollection.model.dto.MovieDto;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -20,5 +18,7 @@ public interface MovieService {
 
     GeneralResponse deleteMovie(Long id);
 
+    List<MovieDto> sortByMovieOrYear(String value);
 
+    List<MovieDto> findBySearch(String value);
 }

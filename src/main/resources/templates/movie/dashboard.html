@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:from="http://www.w3.org/1999/html"
+      xmlns:form="http://www.w3.org/1999/xhtml">
 
 
 <head>
@@ -15,6 +16,7 @@
     <link rel="stylesheet" th:href="@{/css/css.chart.css}">
     <link rel="stylesheet" th:href="@{/css/jsgrid.theme.min.css}">
     <link rel="stylesheet" th:href="@{/css/jsgrid.min.css}">
+    <link rel="stylesheet" th:href="@{/css/toastr.css}">
     <script th:src="@{https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js}"></script>
     <script th:src="@{https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js}"></script>
 </head>
@@ -48,43 +50,42 @@
             </div>
         </div>
 
-
-
         <div class="container-fluid mt-3">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
 
-                            <div class="row p-t-20">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">
-                                            <select id="sortOption" class="form-control">
-                                                <option>Default</option>
-                                                <option>Film Adı</option>
-                                                <option>Yıl</option>
-                                            </select>
-                                        </label>
-                                        <button class="btn btn-primary" type="button" id="sort">Sırala</button>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="col-md-6">
-                                        <div id="zero_config_filter" class="dataTables_filter">
-                                            <label class="control-label">Arama  (Oyuncu, Film Adı, Tür):<input
-                                                    type="search"
-                                                    class="form-control form-control-sm"
-                                                    aria-controls="zero_config">
+                            <div class="row">
+                                <form id="sortForm" th:action="@{movie/sort}" th:object="${filterInput}" method="post">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                <select th:field="*{value}" id="sortOption" class="form-control">
+                                                    <option th:value="default">Default</option>
+                                                    <option th:value="movieName">Film Adı</option>
+                                                    <option th:value="publicationYear">Yıl</option>
+                                                </select>
                                             </label>
-                                            <button class="btn btn-primary" type="button" id="search">ara</button>
+                                            <input class="btn btn-primary" type="submit" id="btnSort" value="Sırala"></input>
                                         </div>
-                                    </div>
-                                </div>
+                                </form>
+
+                                <form id="searchForm" th:action="@{movie/search}" th:object="${filterInput}"
+                                      method="post">
+                                            <div id="zero_config_filter" class="dataTables_filter">
+                                                <label class="control-label">Arama (Oyuncu, Film Adı,
+                                                    Tür):<input
+                                                            name="value"
+                                                            id="search"
+                                                            type="search"
+                                                            class="form-control form-control-sm"
+                                                            aria-controls="zero_config">
+                                                </label>
+                                                <button class="btn btn-primary" type="submit" id="btnSearch">ara
+                                                </button>
+                                            </div>
+                                </form>
                             </div>
-
-
                             <div class="table-responsive">
 
                                 <div class="float-right mb-2">
@@ -126,7 +127,7 @@
                                             </span></td>
 
                                             <td><span th:each="language: ${movie.language}">
-                                                    <span th:text="${language.language}" />
+                                                    <span th:text="${language.toString()}" />
                                             </span></td>
                                             <td>
                                                 <a th:href="@{'/employee/movie?id=' + ${movie.id}}">
@@ -195,6 +196,40 @@
             $('#deleteRecordModal').data('id', $(this).data('id')).modal('show');
         })
 
+        // $("#sortbtn").click(function (){
+        //     var value = $("#sortOption").val()
+        //     $.ajax({
+        //         type: "POST",
+        //         contentType: "application/json; charset=utf-8",
+        //         url: "movie/sort",
+        //         data: value,
+        //         timeout: 100000,
+        //         success: function (response) {
+        //                 setTimeout(function () {
+        //                 }, 500)
+        //         },
+        //         error: function (jqXHR, textStatus, errorThrown) {
+        //             toastr.error("Bilinmeyen Bir Hata oluştu")
+        //         }
+        //     })
+        // })
+        // $("#searchbtn").click(function (){
+        //     var value = $("#search").val()
+        //     $.ajax({
+        //         type: "GET",
+        //         contentType: "application/json; charset=utf-8",
+        //         url: "movie/search?val="+ value,
+        //         timeout: 100000,
+        //         success: function (response) {
+        //             setTimeout(function () {
+        //             }, 500)
+        //         },
+        //         error: function (jqXHR, textStatus, errorThrown) {
+        //             toastr.error("Bilinmeyen Bir Hata oluştu")
+        //         }
+        //     })
+        // })
+
         $("#btnDeleteYes").click(function () {
             var id = $('#deleteRecordModal').data('id');
             $.ajax({
@@ -204,16 +239,17 @@
                 timeout: 100000,
                 success: function (response) {
                     if (response.result == 0) {
+                        console.log(response)
                         toastr.success(response.message)
                         setTimeout(function () {
                             location.reload()
                         }, 500)
                     } else {
-                        toastr.error(response.message)
+                        toastr.error("response.message")
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    toastr.error("Bilinmeyen Bir Hata oluştu")
+                    toastr.error("Yetki Sınırlandırması")
                 }
             });
         })

@@ -11,16 +11,16 @@ import com.spring.moviecollection.repository.MovieRepository;
 import com.spring.moviecollection.service.MovieService;
 import com.spring.moviecollection.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.nonNull;
 
 @Service
 @Slf4j
@@ -77,33 +77,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieDto> findAll() {
         List<Movie> movies = movieRepository.findAll();
-        List<MovieDto> movieDtos = movies.stream().map((Movie movie) -> MovieDto.builder()
-                .id(movie.getId())
-                .movieName(movie.getMovieName())
-                .publicationYear(movie.getPublicationYear())
-                .explanation(movie.getExplanation())
-                .media(movie.getMedia())
-                .category(movie.getCategory().stream().map((Category category) -> CategoryDto
-                                                      .builder()
-                                                      .id(category.getId())
-                                                      .categoryName(category.getCategoryName())
-                                                      .build()).collect(Collectors.toList()))
-                .language(movie.getLanguage().stream().map((LanguageOption languageOption) -> LanguageDto
-                        .builder()
-                        .id(languageOption.getId())
-                        .language(languageOption.getLanguage())
-                        .build()).collect(Collectors.toList()))
-                .actors(movie.getActors().stream().map((Actor actor) -> ActorDto
-                        .builder()
-                        .actorID(actor.getId())
-                        .movieID(actor.getMovie().getId())
-                        .firstName(actor.getFirstName())
-                        .lastName(actor.getLastName())
-                        .role(actor.getRole())
-                        .build()).collect(Collectors.toList()))
-                .build())
-                .collect(Collectors.toList());
-        return movieDtos;
+       return EntityToDto(movies);
     }
 
     @Override
@@ -178,5 +152,47 @@ public class MovieServiceImpl implements MovieService {
             response.setResult(1);
         }
         return response;
+    }
+
+    @Override
+    public List<MovieDto> sortByMovieOrYear(String value) {
+        Sort sortOrder = Sort.by(value);
+        List<Movie> movies = movieRepository.findAll(sortOrder);
+        return EntityToDto(movies);
+    }
+
+    @Override
+    public List<MovieDto> findBySearch(String value) {
+    List<Movie> movies =  movieRepository.findBySearch(value);
+     return EntityToDto(movies);
+    }
+
+    private List<MovieDto> EntityToDto(List<Movie> movies){
+        return movies.stream().map((Movie movie1) -> MovieDto.builder()
+                .id(movie1.getId())
+                .movieName(movie1.getMovieName())
+                .publicationYear(movie1.getPublicationYear())
+                .explanation(movie1.getExplanation())
+                .media(movie1.getMedia())
+                .category(movie1.getCategory().stream().map((Category category) -> CategoryDto
+                        .builder()
+                        .id(category.getId())
+                        .categoryName(category.getCategoryName())
+                        .build()).collect(Collectors.toList()))
+                .language(movie1.getLanguage().stream().map((LanguageOption languageOption) -> LanguageDto
+                        .builder()
+                        .id(languageOption.getId())
+                        .language(languageOption.getLanguage())
+                        .build()).collect(Collectors.toList()))
+                .actors(movie1.getActors().stream().map((Actor actor) -> ActorDto
+                        .builder()
+                        .actorID(actor.getId())
+                        .movieID(actor.getMovie().getId())
+                        .firstName(actor.getFirstName())
+                        .lastName(actor.getLastName())
+                        .role(actor.getRole())
+                        .build()).collect(Collectors.toList()))
+                .build())
+                .collect(Collectors.toList());
     }
 }
