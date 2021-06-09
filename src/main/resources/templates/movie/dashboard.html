@@ -8,10 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <title>Sign Up</title>
+
     <link rel="stylesheet" th:href="@{/css/style.min.css}">
     <link rel="stylesheet" th:href="@{/css/css.chart.css}">
-    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css}">
+    <link rel="stylesheet" th:href="@{/css/jsgrid.theme.min.css}">
+    <link rel="stylesheet" th:href="@{/css/jsgrid.min.css}">
     <script th:src="@{https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js}"></script>
     <script th:src="@{https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js}"></script>
 </head>
@@ -37,8 +40,7 @@
                                 <li class="breadcrumb-item">
                                     Dashboard
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:void(0)">Film
-                                    Listesi</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="javascript:void(0)">Film Listesi</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -46,25 +48,56 @@
             </div>
         </div>
 
-        <div class="container-fluid">
+
+
+        <div class="container-fluid mt-3">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Filmler</h4>
-                            <h6 class="card-subtitle"></h6>
+
+                            <div class="row p-t-20">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            <select id="sortOption" class="form-control">
+                                                <option>Default</option>
+                                                <option>Film Adı</option>
+                                                <option>Yıl</option>
+                                            </select>
+                                        </label>
+                                        <button class="btn btn-primary" type="button" id="sort">Sırala</button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="col-md-6">
+                                        <div id="zero_config_filter" class="dataTables_filter">
+                                            <label class="control-label">Arama  (Oyuncu, Film Adı, Tür):<input
+                                                    type="search"
+                                                    class="form-control form-control-sm"
+                                                    aria-controls="zero_config">
+                                            </label>
+                                            <button class="btn btn-primary" type="button" id="search">ara</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="table-responsive">
+
                                 <div class="float-right mb-2">
-                                    <a th:href="@{employee/movie}">
+                                    <a th:href="@{/employee/movie}">
                                         <i class="fa fa-plus">Film Ekle</i>
                                     </a>
                                 </div>
-                                <table id="demo-foo-addrow" class="table m-t-30 no-wrap table-hover contact-list"
+
+                                <table id="zero_config" class="table table-striped table-bordered"
                                        data-page-size="10">
                                     <thead>
                                     <tr>
 
-                                        <th></th>
                                         <th>Film Adı</th>
                                         <th>Yayın Yılı</th>
                                         <th>Açıklama</th>
@@ -72,8 +105,7 @@
                                         <th>Medya</th>
                                         <th>Kategori</th>
                                         <th>Dil Seçenekleri</th>
-                                        <th>Güncelle</th>
-                                        <th>Sil</th>
+                                        <th>İslemler</th>
                                     </tr>
                                     </thead>
 
@@ -81,30 +113,27 @@
 
                                     <div th:each="movie: ${movies}">
                                         <tr>
-                                            <td><span class="label label-info"/></td>
-                                            <td><span th:text="${movie.getMovieName()}" class="label label-info"/></td>
-                                            <td><span th:text="${movie.getPublicationYear()}" class="label label-info"/></td>
-                                            <td><span th:text="${movie.getExplanation()}" class="label label-info"/></td>
-                                            <td><span th:each="actor: ${movie.getActors()}">
-                                                <span th:text="${actor.toString()}" class="label label-info"/>
+                                            <td><span th:text="${movie.movieName}" /></td>
+                                            <td><span th:text="${movie.publicationYear}" /></td>
+                                            <td><span th:text="${movie.explanation}" /></td>
+                                            <td><span th:each="actor: ${movie.actors}">
+                                                <span th:text="${actor.toString()}" />
                                             </span></td>
-                                            <td><span th:text="${movie.getMedia()}" class="label label-info"/></td>
+                                            <td><span th:text="${movie.media}" /></td>
 
-                                            <td><span th:each="category: ${movie.getCategory()}">
-                                                <span th:text="${category.getCategoryName()}" class="label label-info"/>
+                                            <td><span th:each="category: ${movie.category}">
+                                                <span th:text="${category.categoryName}" />
                                             </span></td>
 
-                                            <td><span th:each="language: ${movie.getLanguage()}">
-                                                    <span th:text="${language.getLanguage()}" class="label label-info"/>
+                                            <td><span th:each="language: ${movie.language}">
+                                                    <span th:text="${language.language}" />
                                             </span></td>
                                             <td>
                                                 <a th:href="@{'/employee/movie?id=' + ${movie.id}}">
                                                     <i class="fas fa-edit" data-toggle="tooltip"
                                                        data-placement="bottom" title=""></i>
                                                 </a>
-                                            </td>
 
-                                            <td>
                                                 <a href="#" class="deleteHref" th:data-id="${movie.id}">
                                                     <i class="fas fa-trash-alt" data-toggle="tooltip"
                                                        data-placement="bottom"></i>
@@ -171,7 +200,7 @@
             $.ajax({
                 type: "DELETE",
                 contentType: "application/json; charset=utf-8",
-                url: "employee/movie?id=" + id,
+                url: "movie?id=" + id,
                 timeout: 100000,
                 success: function (response) {
                     if (response.result == 0) {

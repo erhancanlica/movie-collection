@@ -80,7 +80,7 @@
                                                     <label class="control-label">Kullanıcı Rolu</label>
                                                     <select class="form-control custom-select" name="userType">
                                                         <div th:each="role : ${userRoles}" >
-                                                            <option th:value="${role}">${role}</option>
+                                                            <option th:value="${role}"> <th:block th:text="${role}" /></option>
                                                         </div>
                                                     </select>
                                                 </div>
@@ -136,7 +136,7 @@
                     if(response.result == 0){
                         toastr.success(response.message)
                         setTimeout(function(){
-                            location.reload()
+                            window.location.href="/admin/"
                         },500)
                     }
                     else {

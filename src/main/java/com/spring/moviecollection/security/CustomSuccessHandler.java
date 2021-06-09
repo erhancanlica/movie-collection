@@ -60,13 +60,13 @@ public class CustomSuccessHandler extends SavedRequestAwareAuthenticationSuccess
     public String authenticationAdmin(HttpServletRequest request, Users dbUser){
         final Admins admin  = adminService.findByUser(dbUser);
         request.getSession().setAttribute(Constants.userInfoKey, admin);
-        return "/admin";
+        return "/admin/";
     }
 
     public String authenticationEmployee(HttpServletRequest request, Users dbUser){
         final Employee employee  = employeeService.findByUser(dbUser);
         request.getSession().setAttribute(Constants.userInfoKey, employee);
-        return "/employee";
+        return "/employee/";
     }
 
     private boolean isAdmin(List<String> roles){

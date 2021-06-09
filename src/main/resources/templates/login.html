@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <title>Sign Up</title>
-    <link rel="stylesheet" th:href="@{/css/style.min.css}">
-    <script th:src="@{https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js}"></script>
+    <title>Login</title>
+    <link  th:href="@{/css/style.min.css}" rel="stylesheet">
+    <script th:src="@{https://os    s.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js}"></script>
     <script th:src="@{https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js}"></script>
 </head>
 
@@ -22,14 +22,14 @@
                 <span th:if="${error}">
                      <div class="alert alert-danger">
                          <button class="close" data-close="alert"></button>
-                         <span>${error}</span>
+                         <span th:text="${error}"></span>
                     </div>
                </span>
 
                <span th:if="${logout}">
                    <div class="alert alert-success">
                         <button class="close" data-close="alert"></button>
-                        <span>@{logout}</span>
+                        <span th:text="${logout}"></span>
                  </div>
                </span>
 

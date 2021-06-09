@@ -36,7 +36,7 @@ public class EmployeeController {
     @Autowired
     private LanguageOptionService languageOptionsService;
 
-    @GetMapping
+    @GetMapping("/")
     public ModelAndView dashboard(HttpSession httpSession){
         ModelAndView modelAndView = new ModelAndView("movie/dashboard");
         modelAndView.addObject("movies", movieService.findAll());

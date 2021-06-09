@@ -114,6 +114,7 @@ public class AdminServiceImpl implements AdminService {
 
             try {
                 if (UserType.ADMIN.equals(user.getUserType())) {
+
                     Admins admin = Admins.builder()
                             .id(userDto.getUserId())
                             .adminName(userDto.getRoleName())

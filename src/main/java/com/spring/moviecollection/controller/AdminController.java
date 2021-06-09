@@ -28,13 +28,12 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @GetMapping()
+    @GetMapping("/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView getAll(HttpSession session){
         ModelAndView modelAndView = new ModelAndView("user/listUser");
         List<UserType> userTypeList = Arrays.asList(UserType.values());
-        List<CreateUserDto> users = userService.getAll();
-        modelAndView.addObject("users", users);
+        modelAndView.addObject("users",  userService.getAll());
         modelAndView.addObject("userRoles", userTypeList);
         return modelAndView;
     }

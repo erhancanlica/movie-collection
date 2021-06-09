@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         String[] resources = new String[]{
                 "/", "/home","/pictureCheckCode","/include/",
-                "/css/**","/icons/","/assests/**","/static/**","/images/**","/js/**","/layer/,/resources/**"
+                "/css/**","/icons/**","/assests/**","/static/**","/images/**","/js/**","/layer/,/resources/**"
         };
 
         httpSecurity
@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true")
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
                 .logoutSuccessUrl("/login?logout=true").permitAll();
     }
 

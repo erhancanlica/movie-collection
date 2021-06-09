@@ -1,6 +1,8 @@
 package com.spring.moviecollection.model;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -30,7 +32,7 @@ public class Movie implements Serializable {
     @Column(name = "media")
     private String media;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie")
     private List<Actor> actors = new ArrayList<>();
 
     @ManyToMany
