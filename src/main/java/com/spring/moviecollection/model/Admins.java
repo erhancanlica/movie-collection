@@ -3,6 +3,8 @@ package com.spring.moviecollection.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -11,6 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 @Table(name = "admin")
 public class Admins implements Serializable {
 
@@ -18,6 +21,8 @@ public class Admins implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    @Size(max = 25)
     @Column(name = "admin_name", nullable = false)
     private String adminName;
 

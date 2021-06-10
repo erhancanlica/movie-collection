@@ -3,6 +3,8 @@ package com.spring.moviecollection.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 @Table(name = "employee")
 public class Employee {
 
@@ -17,6 +20,8 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    @Size(max = 25)
     @Column(name = "employee_name", nullable = false)
     private String employeeName;
 

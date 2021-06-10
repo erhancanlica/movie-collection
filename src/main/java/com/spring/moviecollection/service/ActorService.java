@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface ActorService {
 
-    List<ActorDto> findByMovieId(Long id);
-
     GeneralResponse createActor(ActorDto actorDto);
 
     GeneralResponse updateActor(ActorDto actorDto);

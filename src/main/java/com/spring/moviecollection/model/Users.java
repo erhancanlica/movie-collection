@@ -4,6 +4,8 @@ import com.spring.moviecollection.model.enums.UserType;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,11 +23,16 @@ public class Users implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    @Size(max = 25)
     @Column(name = "user_name", unique = true)
     private String username;
 
+    @NotEmpty
+    @Size(max = 25)
     @Column(name = "password")
     private String password;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type", nullable = false)

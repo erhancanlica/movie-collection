@@ -27,15 +27,6 @@ public class ActorServiceImpl implements ActorService {
     @Autowired
     private MovieRepository movieRepository;
 
-    @Override
-    public List<ActorDto> findByMovieId(Long id) {
-        try{
-            List<Optional<Actor>> actors = actorRepository.findByMovieId(id);
-        }catch (Exception ex){
-
-        }
-        return null;
-    }
 
     @Override
     public GeneralResponse createActor(ActorDto actorDto) {

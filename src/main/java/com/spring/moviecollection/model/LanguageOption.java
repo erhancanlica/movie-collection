@@ -3,6 +3,8 @@ package com.spring.moviecollection.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 @Table(name = "language_options")
 
 public class LanguageOption implements Serializable {
@@ -20,6 +23,8 @@ public class LanguageOption implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    @Size(max = 25)
     @Column(name = "language")
     private String language;
 

@@ -1,9 +1,12 @@
 package com.spring.moviecollection.model;
 
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.*;
 
@@ -13,6 +16,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 @Table(name = "movie")
 public class Movie implements Serializable {
 
@@ -20,15 +24,22 @@ public class Movie implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    @Size(max = 25)
     @Column(name = "movie_name", nullable = false)
     private String movieName;
 
+    @NotNull
     @Column(name = "publication_year", nullable = false)
     private String publicationYear;
 
+    @NotEmpty
+    @Size(max = 100)
     @Column(name = "explanation")
     private String explanation;
 
+        @NotEmpty
+    @Size(max = 25)
     @Column(name = "media")
     private String media;
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
@@ -61,13 +61,15 @@
             </div>
         </div>
 
-        <div class="container-fluid mt-2">
+        <div class="container-fluid mt-3">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
+
                         <div class="card-header bg-theme">
                             <h4 class="m-b-0 text-white">Film Islemleri</h4>
                         </div>
+
                         <form id="createMovie">
                             <div class="form-body">
                                 <div class="card-body">
@@ -76,51 +78,52 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-form-label">Film Adı</label>
-                                                <input type="text" th:value="${movies.movieName}" class="form-control"
-                                                       id="movieName" name="movieName"
-                                                       placeholder="Film Adı">
+                                                <input type="text" th:value="*{movies.movieName}" class="form-control"
+                                                       id="movieName" name="movieName" placeholder="Film Adı">
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="form-group has-danger">
+                                            <div class="form-group">
                                                 <label class="control-label col-form-label">Yayın Yılı</label>
-                                                <input type="text" th:value="${movies.publicationYear}"
-                                                       class="form-control" id="publicationYear"
-                                                       name="publicationYear"
-                                                       placeholder="Yayın Yılı">
+                                                <input type="text" th:value="*{movies.publicationYear}"
+                                                       class="form-control number-mask" id="publicationYear"
+                                                       name="publicationYear" placeholder="Yayın Yılı">
                                             </div>
                                         </div>
                                     </div>
+
 
                                     <div class="row p-t-20">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-form-label">Medya</label>
-                                                <input type="text" th:value="${movies.media}" class="form-control"
-                                                       id="media" name="media"
-                                                       placeholder="Media">
+                                                <input type="text" th:value="*{movies.media}"
+                                                       class="form-control" id="media"
+                                                       name="media" placeholder="Media">
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-form-label">Açıklama</label>
-                                                <textarea class="form-control" th:field="${movies.explanation}"
-                                                          id="explanation" name="explanation"
-                                                          rows="2"
+                                                <textarea class="form-control"
+                                                          th:field="*{movies.explanation}"
+                                                          id="explanation" name="explanation" rows="2"
                                                           placeholder="Açıklama"></textarea>
-                                                <input type="hidden" th:data-id="${movies.id}" th:value="${movies.id}"
-                                                       class="form-control" id="id" name="id"/>
+                                                <input type="hidden" th:field="*{movies.id}"
+                                                       class="form-control" id="id" ame="id"/>
                                             </div>
                                         </div>
                                     </div>
+
 
                                     <div class="row p-t-20">
                                         <div class="col-md-6">
                                             <div class="form-group has-success">
                                                 <label class="control-label">Kategoriler</label>
-                                                <select class="js-multiple-select form-control" id="category[]"
+                                                <select class="js-multiple-select form-control"
+                                                        id="category[]"
                                                         name="category[]" style="width: 100%;color: black"
                                                         multiple="multiple" required>
                                                             <span th:each="category : ${categories}">
@@ -129,41 +132,42 @@
                                                                     <span th:text="${category.categoryName}"/>
                                                                 </option>
                                                             </span>
-
-
                                                 </select>
                                             </div>
                                         </div>
 
-
                                         <div class="col-md-6">
                                             <div class="form-group has-success">
                                                 <label class="control-label">Dil Seçenekleri</label>
-                                                <select class="js-multiple-select form-control" id="languages[]"
-                                                        name="language[]" style="width: 100%;color: black"
+                                                <select class="js-multiple-select form-control"
+                                                        id="languages[]"
+                                                        name="language[]"
+                                                        style="width: 100%;color: black"
                                                         multiple="multiple" required>
 
                                                        <span th:each="languageOption: ${languageOptions}">
                                                          <option th:value="${languageOption.id}"
                                                                  th:selected="${#lists.contains(movies.language, languageOption)}">
-                                                                <span th:text="${languageOption.language}" />
+                                                                <span th:text="${languageOption.language}"/>
                                                          </option>
                                                         </span>
-
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
-                                <div class="card-body">
-                                    <div class="action-form">
-                                        <div class="form-group m-b-0 text-right">
-                                            <button type="submit" class="btn btn-info waves-effect waves-light">Kaydet
-                                            </button>
-                                            <button type="reset" class="btn btn-dark waves-effect waves-light">İptal Et
-                                            </button>
-                                        </div>
+                            </div>
+                            <hr>
+                            <div class="card-body">
+                                <div class="action-form">
+                                    <div class="form-group m-b-0 text-right">
+                                        <button type="submit"
+                                                class="btn btn-info waves-effect waves-light">Kaydet
+                                        </button>
+                                        <button type="reset"
+                                                class="btn btn-dark waves-effect waves-light">İptal
+                                            Et
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -171,6 +175,7 @@
                     </div>
                 </div>
             </div>
+
 
             <th:block th:if="${movies.id != null}">
                 <div class="row">
@@ -241,9 +246,9 @@
             </th:block>
         </div>
     </div>
+
     <span th:include="template/footer.html"/>
 </div>
-
 
 <div class="modal fade modal-profile" id="createActorModel" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -311,7 +316,6 @@
 </div>
 
 <script>
-
     $(function () {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
@@ -321,6 +325,8 @@
     });
 
     $(document).ready(function () {
+
+        $(".number-mask").inputmask('Regex', {regex: "^[0-9]{0,4}(\\,\\d{1,2})?$"});
 
         $(".deleteActorHref").click(function () {
             $('#deleteRecordModal').data('id', $(this).data('id')).modal('show');
@@ -387,7 +393,7 @@
 
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    toastr.error("Bilinmeyen Bir Hata oluştu")
+                    toastr.error("Bos bırakılan alanları doldurunuz")
                 }
             })
 
@@ -416,7 +422,7 @@
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    toastr.error("Bilinmeyen Bir Hata oluştu")
+                    toastr.error("Bos bırakılan alanları doldurunuz")
                 }
             })
         });

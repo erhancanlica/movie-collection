@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:from="http://www.w3.org/1999/html"
-      xmlns:form="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 
 <head>
@@ -57,7 +56,7 @@
                         <div class="card-body">
 
                             <div class="row">
-                                <form id="sortForm" th:action="@{movie/sort}" th:object="${filterInput}" method="post">
+                                <form id="sortForm" th:action="@{/employee/movie/sort}" th:object="${filterInput}" method="post">
                                         <div class="form-group">
                                             <label class="control-label">
                                                 <select th:field="*{value}" id="sortOption" class="form-control">
@@ -70,9 +69,10 @@
                                         </div>
                                 </form>
 
-                                <form id="searchForm" th:action="@{movie/search}" th:object="${filterInput}"
+
+                                <form id="searchForm" th:action="@{/employee/movie/search}" th:object="${filterInput}"
                                       method="post">
-                                            <div id="zero_config_filter" class="dataTables_filter">
+                                            <div style="margin-left: 1250px" id="zero_config_filter" class="dataTables_filter">
                                                 <label class="control-label">Arama (Oyuncu, Film Adı,
                                                     Tür):<input
                                                             name="value"
