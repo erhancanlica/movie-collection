@@ -196,39 +196,6 @@
             $('#deleteRecordModal').data('id', $(this).data('id')).modal('show');
         })
 
-        // $("#sortbtn").click(function (){
-        //     var value = $("#sortOption").val()
-        //     $.ajax({
-        //         type: "POST",
-        //         contentType: "application/json; charset=utf-8",
-        //         url: "movie/sort",
-        //         data: value,
-        //         timeout: 100000,
-        //         success: function (response) {
-        //                 setTimeout(function () {
-        //                 }, 500)
-        //         },
-        //         error: function (jqXHR, textStatus, errorThrown) {
-        //             toastr.error("Bilinmeyen Bir Hata oluştu")
-        //         }
-        //     })
-        // })
-        // $("#searchbtn").click(function (){
-        //     var value = $("#search").val()
-        //     $.ajax({
-        //         type: "GET",
-        //         contentType: "application/json; charset=utf-8",
-        //         url: "movie/search?val="+ value,
-        //         timeout: 100000,
-        //         success: function (response) {
-        //             setTimeout(function () {
-        //             }, 500)
-        //         },
-        //         error: function (jqXHR, textStatus, errorThrown) {
-        //             toastr.error("Bilinmeyen Bir Hata oluştu")
-        //         }
-        //     })
-        // })
 
         $("#btnDeleteYes").click(function () {
             var id = $('#deleteRecordModal').data('id');

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
 @Slf4j
-public class GloabalExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ModelAndView handleError(NoHandlerFoundException ex) {

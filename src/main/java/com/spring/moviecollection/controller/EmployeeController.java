@@ -6,16 +6,12 @@ import com.spring.moviecollection.service.CategoryService;
 import com.spring.moviecollection.service.LanguageOptionService;
 import com.spring.moviecollection.service.MovieService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import static java.util.Objects.nonNull;
 
@@ -25,17 +21,20 @@ import static java.util.Objects.nonNull;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Autowired
-    private MovieService movieService;
+    private final MovieService movieService;
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
-    @Autowired
-    private ActorService actorService;
+    private final ActorService actorService;
 
-    @Autowired
-    private LanguageOptionService languageOptionsService;
+    private final LanguageOptionService languageOptionsService;
+
+    public EmployeeController(ActorService actorService, LanguageOptionService languageOptionsService, CategoryService categoryService, MovieService movieService) {
+        this.actorService = actorService;
+        this.languageOptionsService = languageOptionsService;
+        this.categoryService = categoryService;
+        this.movieService = movieService;
+    }
 
     @GetMapping("/")
     public ModelAndView dashboard(HttpSession httpSession){
@@ -59,6 +58,12 @@ public class EmployeeController {
         return modelAndView;
     }
 
+    @PostMapping("/movie")
+    @ResponseBody
+    public GeneralResponse createMovie(@RequestBody CreateMovieDto createMovieDto) {
+        return movieService.createMovie(createMovieDto);
+    }
+
     @PostMapping("/movie/sort")
     public ModelAndView sortMovie(@ModelAttribute FilterInput filterInput, ModelAndView modelAndView) {
         modelAndView.setViewName("movie/dashboard");
@@ -77,12 +82,6 @@ public class EmployeeController {
         else
             modelAndView.addObject("movies", movieService.findBySearch(filterInput.getValue()));
         return modelAndView;
-    }
-
-    @PostMapping("/movie")
-    @ResponseBody
-    public GeneralResponse createMovie(@RequestBody CreateMovieDto createMovieDto) {
-        return movieService.createMovie(createMovieDto);
     }
 
     @PutMapping("/movie")

@@ -1,19 +1,15 @@
 package com.spring.moviecollection.service.Impl;
 
-import com.spring.moviecollection.model.Admins;
 import com.spring.moviecollection.model.Employee;
 import com.spring.moviecollection.model.Users;
 import com.spring.moviecollection.model.dto.CreateUserDto;
 import com.spring.moviecollection.model.dto.GeneralResponse;
 import com.spring.moviecollection.model.enums.UserType;
-import com.spring.moviecollection.repository.AdminRepository;
 import com.spring.moviecollection.repository.EmployeeRepository;
 import com.spring.moviecollection.repository.UserRepository;
 import com.spring.moviecollection.service.EmployeeService;
 import com.spring.moviecollection.utils.Constants;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,14 +22,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
-    @Autowired
-    private AdminRepository adminRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, UserRepository userRepository) {
+        this.employeeRepository = employeeRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Employee findByUser(Users user) {
@@ -41,15 +37,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Optional<Employee> findById(Long id) {
-        Optional<Employee> employee = employeeRepository.findById(id);
+    public Employee findById(Long id) {
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        Employee employee = null;
+        if (optionalEmployee.isPresent())
+            employee = optionalEmployee.get();
+
         return employee;
     }
 
     @Override
     public List<CreateUserDto> getAll() {
         List<Employee> employees = employeeRepository.findAll();
-        List<CreateUserDto> userDtos = employees.stream().map((Employee employee)-> CreateUserDto.builder()
+        List<CreateUserDto> userDt = employees.stream().map((Employee employee)-> CreateUserDto.builder()
                 .id(employee.getUser().getId())
                 .userId(employee.getId())
                 .username(employee.getUser().getUsername())
@@ -58,11 +58,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .roleName(employee.getEmployeeName())
                 .build())
                 .collect(Collectors.toList());
-        return userDtos;
+        return userDt;
     }
 
     @Override
-    public GeneralResponse createEmploye(CreateUserDto userDto) {
+    public GeneralResponse createEmployee(CreateUserDto userDto) {
         GeneralResponse response = GeneralResponse.builder().build();
 
         try {
@@ -100,10 +100,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeRepository.save(employee);
     }
 
-    @Override
-    public void deleteById(Long id) {
-        employeeRepository.deleteById(id);
-    }
 
     @Override
     public void deleteEmployee(CreateUserDto userDto) {

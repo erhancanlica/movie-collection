@@ -3,7 +3,6 @@ package com.spring.moviecollection.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,7 +30,7 @@ public class Movie implements Serializable {
 
     @NotNull
     @Column(name = "publication_year", nullable = false)
-    private String publicationYear;
+    private int publicationYear;
 
     @NotEmpty
     @Size(max = 100)

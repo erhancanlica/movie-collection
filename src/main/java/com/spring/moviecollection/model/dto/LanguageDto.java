@@ -2,8 +2,6 @@ package com.spring.moviecollection.model.dto;
 
 import lombok.*;
 
-import java.util.Objects;
-
 @Getter
 @Setter
 @Builder

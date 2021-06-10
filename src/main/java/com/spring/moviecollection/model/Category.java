@@ -24,7 +24,7 @@ public class Category implements Serializable {
     private Long id;
 
     @NotEmpty
-    @Size(max = 5)
+    @Size(max = 25)
     @Column(name = "category_name")
     private String categoryName;
 

@@ -29,10 +29,8 @@ public class Users implements Serializable {
     private String username;
 
     @NotEmpty
-    @Size(max = 25)
     @Column(name = "password")
     private String password;
-
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type", nullable = false)

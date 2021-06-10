@@ -10,10 +10,11 @@ import java.util.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class MovieDto {
     private Long id;
     private String movieName;
-    private String publicationYear;
+    private int publicationYear;
     private String explanation;
     private String media;
     private List<CategoryDto> category = new ArrayList<>();

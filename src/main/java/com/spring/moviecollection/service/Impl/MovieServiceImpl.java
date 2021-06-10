@@ -27,14 +27,17 @@ import java.util.stream.Collectors;
 @Transactional
 public class MovieServiceImpl implements MovieService {
 
-    @Autowired
-    private MovieRepository movieRepository;
+    private final MovieRepository movieRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private LanguageOptionRepository languageOptionRepository;
+    private final LanguageOptionRepository languageOptionRepository;
+
+    public MovieServiceImpl(MovieRepository movieRepository, CategoryRepository categoryRepository, LanguageOptionRepository languageOptionRepository) {
+        this.movieRepository = movieRepository;
+        this.categoryRepository = categoryRepository;
+        this.languageOptionRepository = languageOptionRepository;
+    }
 
     @Override
     public MovieDto findById(Long id) {
@@ -45,7 +48,7 @@ public class MovieServiceImpl implements MovieService {
         else
             throw new RuntimeException("Movie not found for id : " + id);
 
-        MovieDto movieDto =MovieDto.builder()
+        MovieDto movieDto = MovieDto.builder()
                 .id(movie.getId())
                 .movieName(movie.getMovieName())
                 .publicationYear(movie.getPublicationYear())

@@ -2,5 +2,5 @@
                                                  Data
 -----------------------------------------------------------------------------------------------------------------------
 INSERT INTO users (`password`, `user_type`, `user_name`) VALUES ('$2a$10$Anzq3AwyJYPz7lIIG/HOwetHeMQijqPmKroWjvO1OFseER5I.pEwi', 'ADMIN', 'admin');
-INSERT INTO admin (`admin_name`, `UserID`) VALUES ('erhan', '1')
+INSERT INTO admin (`admin_name`, `user_id`) VALUES ('adminName', '1')
 -----------------------------------------------------------------------------------------------------------------------

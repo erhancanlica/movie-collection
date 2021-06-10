@@ -22,12 +22,12 @@ public class Actor implements Serializable {
 
     @NotEmpty
     @Size(max = 25)
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name")
     private String firstName;
 
     @NotEmpty
     @Size(max = 25)
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name")
     private String lastName;
 
     @Size(max = 25)

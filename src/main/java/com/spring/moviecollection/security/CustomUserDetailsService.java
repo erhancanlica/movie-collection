@@ -2,7 +2,6 @@ package com.spring.moviecollection.security;
 
 import com.spring.moviecollection.model.Users;
 import com.spring.moviecollection.service.Impl.UserServiceImpl;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,10 +16,13 @@ import java.util.List;
 
 @Service("customUserDetailsService")
 @Slf4j
-@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
    private final UserServiceImpl userService;
+
+    public CustomUserDetailsService(UserServiceImpl userService) {
+        this.userService = userService;
+    }
 
     @Override
     @Transactional(readOnly = true)

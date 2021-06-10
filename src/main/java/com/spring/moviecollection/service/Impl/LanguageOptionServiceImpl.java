@@ -17,8 +17,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LanguageOptionServiceImpl implements LanguageOptionService {
 
-    @Autowired
-    private LanguageOptionRepository languageOptionRepository;
+    private final LanguageOptionRepository languageOptionRepository;
+
+    public LanguageOptionServiceImpl(LanguageOptionRepository languageOptionRepository) {
+        this.languageOptionRepository = languageOptionRepository;
+    }
 
     @Override
     public List<LanguageDto> findAll() {

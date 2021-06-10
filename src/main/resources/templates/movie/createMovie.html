@@ -111,8 +111,7 @@
                                                           th:field="*{movies.explanation}"
                                                           id="explanation" name="explanation" rows="2"
                                                           placeholder="Açıklama"></textarea>
-                                                <input type="hidden" th:field="*{movies.id}"
-                                                       class="form-control" id="id" ame="id"/>
+                                                <input type="hidden" class="form-control" th:value="*{movies.id}" id="id" name="id"/>
                                             </div>
                                         </div>
                                     </div>
@@ -326,7 +325,20 @@
 
     $(document).ready(function () {
 
+
         $(".number-mask").inputmask('Regex', {regex: "^[0-9]{0,4}(\\,\\d{1,2})?$"});
+
+        $(".modal").on("hidden.bs.modal", function(){
+            $(".modal-body").html("");
+        });
+        let template = null;
+        $('.modal').on('show.bs.modal', function(event) {
+            template = $(this).html();
+        });
+
+        $('.modal').on('hidden.bs.modal', function(e) {
+            $(this).html(template);
+        });
 
         $(".deleteActorHref").click(function () {
             $('#deleteRecordModal').data('id', $(this).data('id')).modal('show');
@@ -380,6 +392,7 @@
                 url: "actor?id",
                 data: JSON.stringify(postData),
                 contentType: "application/json",
+                timeout: 100000,
                 success: function (response) {
                     if (response.result == 0) {
                         toastr.success(response.message)
@@ -403,7 +416,8 @@
         $("#createMovie").submit(function (e) {
             e.preventDefault();
             var postData = $('#createMovie').serializeObject();
-            var type = $('#createMovie #id').data('id') == null ? "POST" : "PUT";
+            var type = $('#createMovie').val('id') == null ? "POST" : "PUT";
+            console.log(type)
             $.ajax({
                 type: type,
                 url: "movie",

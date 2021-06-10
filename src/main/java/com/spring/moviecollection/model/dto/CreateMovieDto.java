@@ -14,10 +14,11 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class CreateMovieDto {
     private Long id;
     private String movieName;
-    private String publicationYear;
+    private int publicationYear;
     private String explanation;
     private String media;
     private List<Long> category = new ArrayList<>();

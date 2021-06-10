@@ -27,6 +27,6 @@ public class Admins implements Serializable {
     private String adminName;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "UserID", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 }

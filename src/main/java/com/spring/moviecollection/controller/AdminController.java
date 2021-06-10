@@ -7,7 +7,6 @@ import com.spring.moviecollection.model.enums.UserType;
 import com.spring.moviecollection.service.AdminService;
 import com.spring.moviecollection.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +21,14 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private AdminService adminService;
+    private final AdminService adminService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public AdminController(AdminService adminService, UserService userService) {
+        this.adminService = adminService;
+        this.userService = userService;
+    }
 
     @GetMapping("/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

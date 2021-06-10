@@ -31,20 +31,24 @@ import static java.util.Objects.requireNonNull;
 @Slf4j
 public class AdminServiceImpl implements AdminService {
 
-    @Autowired
-    private AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public AdminServiceImpl(AdminRepository adminRepository, UserRepository userRepository,
+                            EmployeeService employeeService, UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.adminRepository = adminRepository;
+        this.userRepository = userRepository;
+        this.employeeService = employeeService;
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     public Admins findByUser(Users user) {
@@ -54,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<CreateUserDto> getAll() {
         List<Admins> admins = adminRepository.findAll();
-        List<CreateUserDto> userDtos = admins.stream().map((Admins admin)-> CreateUserDto.builder()
+        List<CreateUserDto> userDto = admins.stream().map((Admins admin)-> CreateUserDto.builder()
                 .id(admin.getUser().getId())
                 .userId(admin.getId())
                 .username(admin.getUser().getUsername())
@@ -63,7 +67,7 @@ public class AdminServiceImpl implements AdminService {
                 .roleName(admin.getAdminName())
                 .build())
                 .collect(Collectors.toList());
-        return userDtos;
+        return userDto;
     }
 
     @Override
@@ -81,7 +85,7 @@ public class AdminServiceImpl implements AdminService {
 
         if (UserType.EMPLOYEE.equals(userDto.getUserType())) {
             try {
-                generalResponse = employeeService.createEmploye(userDto);
+                generalResponse = employeeService.createEmployee(userDto);
                 generalResponse.setMessage(Constants.success);
                 generalResponse.setResult(0);
             }catch (Exception ex){
@@ -122,7 +126,6 @@ public class AdminServiceImpl implements AdminService {
                             .adminName(userDto.getRoleName())
                             .user(user)
                             .build();
-
 
                     adminRepository.save(admin);
                     response.setMessage("update successful");
